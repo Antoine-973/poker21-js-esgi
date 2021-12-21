@@ -20,12 +20,16 @@ body{
     width: 85%;
     height: 85%;
     background: #212121;
-}
-
-.item{
-
+    position: relative;
 }
 
 .hidden{
-    visibility: hidden;
+    display: none;
+}
+
+.global-stats{
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    font-size: xx-small;
 }

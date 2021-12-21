@@ -11,12 +11,26 @@
 
         <h1 class="item">Le BlackJacques</h1>
 
-        <div class="item global-stats">
+        <img id="description-img" style="width: 20%" src="casino-entrance.png">
+
+        <div class="hidden global-stats">
           <table>
             <thead>
               <tr colspan="2">Statistiques</tr>
             </thead>
             <tbody>
+              <tr>
+                <td>Porte-monnaie du joueur initial</td>
+                <td id="initial-player-wallet-value">0</td>
+              </tr>
+              <tr>
+                <td>Porte-monnaie du joueur actuel</td>
+                <td id="actual-player-wallet-value">0</td>
+              </tr>
+              <tr>
+                <td>Différence</td>
+                <td id="player-wallet-difference"></td>
+              </tr>
               <tr>
                 <td>Victoire</td>
                 <td>0</td>
@@ -28,25 +42,30 @@
             </tbody>
           </table>
         </div>
-
-        <div class="item player-bank">
-          <p>Banque du joueur : 100</p>
+        
+        <div class="game-status">
+          Appuyez sur le bouton pour rentrer dans le casino.
         </div>
 
-        <div class="hidden player-bet item">
+        <div class="hidden player-wallet item">
+          <label for="player-wallet">Montant de votre porte monnaie :</label>
+          <input type="number" name="player-wallet" id="player-wallet" max="100">
+          <button class="confirm-wallet-amount-button">Confirmer la valeur du porte monnaie</button>
+        </div>
+
+        <button alt="enter-casino-button" class="enter-casino-button">Rentrer dans le casino</button>
+
+        <div class="hidden games-selection">
+          <button alt="new-game-blackjack" class="new-game-blackjack-button">Jouer au blackjack</button>
+        </div>
+
+        <div class="hidden blackjack-table item">
+
+          <div class="player-bet item">
           <label for="player-bet">Montant du pari (Minimum 2, Maximum 100):</label>
-          <input type="number" name="player-bet" min="2" max="100">
-          <button>Parier</button>
+          <input type="number" name="player-bet" id="player-bet" min="2" max="100">
+          <button class="confirm-bet-button">Parier</button>
         </div>
-
-        <button alt="new-game" class="new-game-button">Nouvelle partie</button>
-
-        <div class="hidden game-buttons">
-            <button alt="draw" class="draw-button">Piocher</button>
-            <button alt="stop" class="stop-button">Arreter</button>
-        </div>
-
-        <div class="blackjack-table">
 
           <div class="player">
             <h3>Main du joueur</h3>
@@ -56,6 +75,11 @@
           <div class="dealer">
             <h3>Main du croupier</h3>
             <p class="dealer-hand">Commencer par piocher une carte</p>
+          </div>
+
+          <div class="game-item game-buttons">
+            <button alt="draw" class="hidden draw-button">Piocher</button>
+            <button alt="stop" class="hidden stop-button">Arreter</button>
           </div>
 
         </div>
