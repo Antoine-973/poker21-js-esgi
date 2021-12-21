@@ -1,16 +1,67 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="fr">
   <head>
     <meta charset="utf-8">
-    <title>Test</title>
-    <link rel="stylesheet" href="./index.css">
+    <title>BlackJacques</title>
+    <link rel="stylesheet" href="./style.css">
   </head>
-  <body>
-    <form id="todo">
-      <input type="text" id="description" name="description" placeholder="Ex: faire la vaisselle">
-      <button type="submit">Ajouter</button>
-    </form>
-    <ul id="todos"></ul>
-    <script src="./index.js" type="module"></script>
+  <body style="background-color: red">
+    <div class="container">
+      <div class="col">
+
+        <h1 class="item">Le BlackJacques</h1>
+
+        <div class="item global-stats">
+          <table>
+            <thead>
+              <tr colspan="2">Statistiques</tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Victoire</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>Defaite</td>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="item player-bank">
+          <p>Banque du joueur : 100</p>
+        </div>
+
+        <div class="hidden player-bet item">
+          <label for="player-bet">Montant du pari (Minimum 2, Maximum 100):</label>
+          <input type="number" name="player-bet" min="2" max="100">
+          <button>Parier</button>
+        </div>
+
+        <button alt="new-game" class="new-game-button">Nouvelle partie</button>
+
+        <div class="hidden game-buttons">
+            <button alt="draw" class="draw-button">Piocher</button>
+            <button alt="stop" class="stop-button">Arreter</button>
+        </div>
+
+        <div class="blackjack-table">
+
+          <div class="player">
+            <h3>Main du joueur</h3>
+            <p class="player-hand">Commencer par piocher une carte</p>
+          </div>
+
+          <div class="dealer">
+            <h3>Main du croupier</h3>
+            <p class="dealer-hand">Commencer par piocher une carte</p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+    <script src="./main.js" type="module"></script>
   </body>
 </html>
