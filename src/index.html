@@ -43,7 +43,7 @@
           </table>
         </div>
         
-        <div class="game-status">
+        <div id="game-status">
           Appuyez sur le bouton pour rentrer dans le casino.
         </div>
 
@@ -59,27 +59,35 @@
           <button alt="new-game-blackjack" class="new-game-blackjack-button">Jouer au blackjack</button>
         </div>
 
-        <div class="hidden blackjack-table item">
-
-          <div class="player-bet item">
+        <div class="hidden player-bet-form item">
           <label for="player-bet">Montant du pari (Minimum 2, Maximum 100):</label>
           <input type="number" name="player-bet" id="player-bet" min="2" max="100">
           <button class="confirm-bet-button">Parier</button>
         </div>
 
+        <div class="hidden blackjack-table item">
+          <button alt="surrender" id="surrender-button" class="hidden">Abandonner</button>
           <div class="player">
-            <h3>Main du joueur</h3>
-            <p class="player-hand">Commencer par piocher une carte</p>
+            <h3 id="player-score">Main du joueur : 0</h3>
+            <div id="player-cards">
+              <!-- Cards will appear here. -->
+            </div>
           </div>
 
           <div class="dealer">
-            <h3>Main du croupier</h3>
-            <p class="dealer-hand">Commencer par piocher une carte</p>
+            <h3 id="dealer-score">Main du croupier : 0</h3>
+            <div id="dealer-cards">
+              <!-- Cards will appear here. -->
+            </div>
           </div>
 
           <div class="game-item game-buttons">
-            <button alt="draw" class="hidden draw-button">Piocher</button>
-            <button alt="stop" class="hidden stop-button">Arreter</button>
+            <button alt="start" id="start-button" class="hidden">Commencer</button>
+            <button alt="draw" id="hit-button" class="hidden">Tirer une carte</button>
+            <button alt="stand" id="stand-button" class="hidden">Rester</button>
+            <button alt="double" id="double-button" class="hidden">Doubler la mise</button>
+            <button alt="split" id="split-button" class="hidden">Partager</button>
+            <button alt="insurance" id="insurance-button" class="hidden">Assurance</button>
           </div>
 
         </div>
