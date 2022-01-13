@@ -33,58 +33,56 @@ let insuranceButtonDisplay = document.getElementById("insurance-button");
 surrenderButtonDisplay.onclick = surrender;
 startButtonDisplay.onclick = newDeck;
 startButtonDisplay.onclick = newDeck;
-hitButtonDisplay.onclick = ()=>hitMe('player');
-standButtonDisplay.onclick = ()=>setTimeout(()=>dealerPlays(), 600);
+hitButtonDisplay.onclick = () => hitMe('player');
+standButtonDisplay.onclick = () => stay();
 
-export function initBlackJacquesBet(statusMessage){
+export function initBlackJackBet(statusMessage) {
     document.getElementsByClassName("games-selection")[0].classList.add("hidden");
-    document.getElementById("description-img").src="dealer.png";
+    document.getElementById("description-img").src = "dealer.png";
     announcementMessage.textContent = `${statusMessage}`;
     document.getElementsByClassName("player-bet-form")[0].classList.remove("hidden");
-    document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", startBlackJacques);
+    document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", startBlackJack);
 }
 
-function startBlackJacques(){
+function startBlackJack() {
     roundBet = parseInt(document.querySelector('input[id="player-bet"]').value);
-    if (roundBet <= playerWallet.getActualValue && roundBet >= 2 && roundBet <= 100){
+    if (roundBet <= playerWallet.getActualValue && roundBet >= 2 && roundBet <= 100) {
         actualiseWallet('-', roundBet)
         document.getElementsByClassName("player-bet-form")[0].classList.add("hidden");
         announcementMessage.textContent = 'La partie commence';
         document.getElementsByClassName("blackjack-table")[0].classList.remove("hidden");
         newDeck();
         document.getElementById("hit-button").classList.remove("hidden");
-    }
-    else{
-        document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", initBlackJacquesBet('Le montant de votre paris doit être entre 2 et 100 et ne peut pas depasser la valeur de votre porte monnaie.'));
+    } else {
+        document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", initBlackJackBet('Le montant de votre paris doit être entre 2 et 100 et ne peut pas depasser la valeur de votre porte monnaie.'));
     }
 }
 
-function surrender(){
+function surrender() {
     document.getElementsByClassName("blackjack-table")[0].classList.add("hidden");
     actualiseWallet('+', roundBet / 2);
-    if (playerWallet.getActualValue >= 2){
-        initBlackJacquesBet('Vous abandonnez, d\'accord voici la moitié de votre mise initiale. On remet ça ?');
-    }
-    else {
+    if (playerWallet.getActualValue >= 2) {
+        initBlackJackBet('Vous abandonnez, d\'accord voici la moitié de votre mise initiale. On remet ça ?');
+    } else {
         enterCasino();
     }
 }
 
-async function newDeck(){
+async function newDeck() {
     resetPlayingArea();
     const abortController = new AbortController();
     await fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
-    .then(function (response) {
-        if (response.ok) {
-            return response.json();
-        }
-        return Promise.reject(new Error("Something went wrong"));
-    }).then(function (data){
-        deckID = data.deck_id;
-        remainingCards = data.remaining;
-    }).catch(function (error) {
-        console.log(error.message);
-    });
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            }
+            return Promise.reject(new Error("Something went wrong"));
+        }).then(function (data) {
+            deckID = data.deck_id;
+            remainingCards = data.remaining;
+        }).catch(function (error) {
+            console.log(error.message);
+        });
 
     setTimeout(function () {
         abortController.abort();
@@ -96,8 +94,74 @@ async function newDeck(){
     newHand();
 }
 
-function test(){
+function test() {
     console.log(deckID);
+}
+
+function hitMe() {
+    fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=1`)
+        .then(res => res.json())
+        .then(res => {
+            hitButtonDisplay.style.display = "block";
+            standButtonDisplay.style.display = "block";
+
+            playerCards.push(res.cards[0])
+            let cardDomElement = document.createElement("img");
+            cardDomElement.src = res.cards[0].image;
+            playerCardsDisplay.appendChild(cardDomElement);
+            playerScore = computeScore(playerCards);
+
+            if (playerScore > 21) {
+                playerScoreDisplay.textContent = `Votre main : ${playerScore}`;
+                roundLost = true;
+                alert("Vous avez perdu, cheh!");
+                // resetPlayingArea();
+            } else if (playerScore === 21) {
+                playerScoreDisplay.textContent = `Votre main : ${playerScore}`;
+                roundWon = true;
+                alert("Vous avez gagné bg !");
+                // resetPlayingArea();
+            } else {
+                playerScoreDisplay.textContent = `Votre main : ${playerScore}`;
+            }
+
+        })
+        .catch(console.error)
+}
+
+function stay() {
+    console.log('va baiser ta mère et marche gros fdp', dealerScore)
+    dealerScore = computeScore(dealerCards);
+    while (dealerScore <= 17) {
+        fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=1`)
+            .then(res => res.json())
+            .then(res => {
+                hitButtonDisplay.style.display = "disabled";
+                standButtonDisplay.style.display = "disabled";
+
+                dealerCards.push(res.cards[0])
+                let cardDomElement = document.createElement("img");
+                cardDomElement.src = res.cards[0].image;
+                dealerCardsDisplay.appendChild(cardDomElement);
+
+                // if (dealerScore > 21) {
+                //     dealerScoreDisplay.textContent = `Votre main : ${dealerScore}`;
+                //     roundLost = true;
+                //     resetPlayingArea();
+                //     alert("Vous avez perdu, cheh!");
+                // }else if (dealerScore === 21){
+                //     dealerScoreDisplay.textContent = `Votre main : ${dealerScore}`;
+                //     roundWon = true;
+                //     resetPlayingArea();
+                //     alert("Vous avez perdu, cheh!");
+                // }else{
+                dealerScoreDisplay.textContent = `Votre main : ${dealerScore}`;
+                // }
+
+            })
+            .catch(console.error)
+    }
+
 }
 
 function newHand() {
@@ -144,7 +208,9 @@ function computeScore(cards) {
             hasAce = true;
             return acc + 1;
         }
-        if (isNaN(card.value)) { return acc + 10 }
+        if (isNaN(card.value)) {
+            return acc + 10
+        }
         return acc + Number(card.value);
     }, 0)
     if (hasAce) {

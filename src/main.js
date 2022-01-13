@@ -1,4 +1,4 @@
-import { initBlackJacquesBet } from './library/games/blackJacques.js'
+import { initBlackJackBet } from './library/games/blackJack.js'
 import {actualiseWallet, playerWallet} from './library/stats/playerWallet.js'
 
 export const announcementMessage = document.getElementById("game-status");
@@ -18,7 +18,7 @@ function selectGame(){
     document.getElementsByClassName("games-selection")[0].classList.remove("hidden");
     document.getElementsByClassName("global-stats")[0].classList.remove("hidden");
     announcementMessage.textContent = `Vous rentrez dans le casino avec un porte monnaie d'une valeur de ${playerWallet.getInitialValue}€`;
-    document.getElementsByClassName("new-game-blackjack-button")[0].addEventListener("click", initBlackJacquesBet('Début de la partie, veuillez donner la valeur de votre mise :'));
+    document.getElementsByClassName("new-game-blackjack-button")[0].addEventListener("click", initBlackJackBet('Début de la partie, veuillez donner la valeur de votre mise :'));
 }
 
 document.getElementsByClassName("enter-casino-button")[0].addEventListener("click", enterCasino);
