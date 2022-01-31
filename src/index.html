@@ -39,6 +39,10 @@
                 <td>Defaite</td>
                 <td>0</td>
               </tr>
+              <tr>
+                <td>Egalité</td>
+                <td>0</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -55,14 +59,15 @@
 
         <button alt="enter-casino-button" class="enter-casino-button">Rentrer dans le casino</button>
 
-        <div class="hidden games-selection">
-          <button alt="new-game-blackjack" class="new-game-blackjack-button">Jouer au blackjack</button>
-        </div>
-
         <div class="hidden player-bet-form item">
           <label for="player-bet">Montant du pari (Minimum 2, Maximum 100):</label>
           <input type="number" name="player-bet" id="player-bet" min="2" max="100">
           <button class="confirm-bet-button">Parier</button>
+        </div>
+
+        <div class="end-round-buttons">
+          <button alt="restart" id="restart-button" class="hidden">Rejouer une partie</button>
+          <button alt="end" id="end-button" class="hidden">Quitter le casino</button>
         </div>
 
         <div class="hidden blackjack-table item">
@@ -75,7 +80,7 @@
           </div>
 
           <div class="dealer">
-            <h3 id="dealer-score">Main du croupier : 0</h3>
+            <h3 id="dealer-score">Main du croupier : ?</h3>
             <div id="dealer-cards">
               <!-- Cards will appear here. -->
             </div>
