@@ -50,7 +50,7 @@ export function initBlackJackBet(statusMessage) {
     else {
         restartButtonDisplay.classList.add("hidden");
         endButtonDisplay.classList.add("hidden");
-        document.getElementById("description-img").src = "dealer.png";
+        document.getElementById("description-img").src = "src/dealer.png";
         announcementMessage.textContent = `${statusMessage}`;
         document.getElementsByClassName("player-bet-form")[0].classList.remove("hidden");
         document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", startBlackJack);
