@@ -1,5 +1,5 @@
 import {actualiseWallet, playerWallet} from '../stats/playerWallet.js'
-import {enterCasino, announcementMessage} from "../../main.js";
+import {enterCasino, announcementMessage, leaveCasino} from "../../main.js";
 
 let deckID = "";
 let remainingCards = 0;
@@ -39,15 +39,22 @@ startButtonDisplay.onclick = newDeck;
 hitButtonDisplay.onclick = () => hitMe('player');
 standButtonDisplay.onclick= ()=>setTimeout(()=>dealerPlays(), 600);
 restartButtonDisplay.onclick = replay;
-endButtonDisplay.onclick = end;
+endButtonDisplay.onclick = leaveCasino;
 
 export function initBlackJackBet(statusMessage) {
-    restartButtonDisplay.classList.add("hidden");
-    endButtonDisplay.classList.add("hidden");
-    document.getElementById("description-img").src = "dealer.png";
-    announcementMessage.textContent = `${statusMessage}`;
-    document.getElementsByClassName("player-bet-form")[0].classList.remove("hidden");
-    document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", startBlackJack);
+    if (playerWallet.getActualValue === 0){
+        resetPlayingArea();
+        document.getElementsByClassName("blackjack-table")[0].classList.add("hidden");
+        leaveCasino();
+    }
+    else {
+        restartButtonDisplay.classList.add("hidden");
+        endButtonDisplay.classList.add("hidden");
+        document.getElementById("description-img").src = "dealer.png";
+        announcementMessage.textContent = `${statusMessage}`;
+        document.getElementsByClassName("player-bet-form")[0].classList.remove("hidden");
+        document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", startBlackJack);
+    }
 }
 
 function startBlackJack() {
@@ -75,13 +82,12 @@ function surrender() {
 }
 
 function replay(){
+    document.querySelector("#count-draw").innerHTML = `${roundDraw}`;
+    document.querySelector("#count-lose").innerHTML = `${roundLost}`;
+    document.querySelector("#count-victory").innerHTML = `${roundWon}`;
     resetPlayingArea();
     document.getElementsByClassName("blackjack-table")[0].classList.add("hidden");
     initBlackJackBet("Début de la partie, veuillez donner la valeur de votre mise :")
-}
-
-function end(){
-    resetPlayingArea();
 }
 
 async function newDeck() {
@@ -111,6 +117,7 @@ async function newDeck() {
 }
 
 function hitMe(target) {
+    document.getElementById("surrender-button").classList.add("hidden");
     fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=1`)
         .then(res => res.json())
         .then(res => {
@@ -186,6 +193,7 @@ function newHand() {
             playerScore = computeScore(playerCards);
             if (playerScore === 21) {
                 roundWon += 1;
+                actualiseWallet('+', roundBet * 2);
                 announcementMessage.textContent = "BlackJack! Vous avez gagné !";
             }
             playerScoreDisplay.textContent = `Votre main : ${playerScore}`;
@@ -203,6 +211,7 @@ function dealerPlays() {
     }
     else if (dealerScore > 21) {
         roundWon += 1;
+        actualiseWallet('+', roundBet * 2);
         announcementMessage.textContent = "Vous avez gagné ! Voulez vous rejouer ?"
         restartButtonDisplay.classList.remove("hidden");
         endButtonDisplay.classList.remove("hidden");
@@ -215,12 +224,14 @@ function dealerPlays() {
     }
     else if (dealerScore === playerScore) {
         roundDraw += 1;
+        actualiseWallet('+', roundBet);
         announcementMessage.textContent = "Egalité ! Voulez vous rejouer ?"
         restartButtonDisplay.classList.remove("hidden");
         endButtonDisplay.classList.remove("hidden");
     }
     else {
         roundWon += 1;
+        actualiseWallet('+', roundBet * 2);
         announcementMessage.textContent = "Vous avez gagné ! Voulez vous rejouer ?"
         restartButtonDisplay.classList.remove("hidden");
         endButtonDisplay.classList.remove("hidden");

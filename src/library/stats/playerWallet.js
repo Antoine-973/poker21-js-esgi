@@ -1,6 +1,8 @@
 export const PlayerWallet = {
     initialValue: 0,
     actualValue: 0,
+    gain: 0,
+    gainRecord: 0,
 
     get getInitialValue(){
         return this.initialValue;
@@ -17,6 +19,22 @@ export const PlayerWallet = {
 
     set setActualValue(newActualValue){
         this.actualValue = newActualValue;
+    },
+
+    get getGain(){
+        return this.gain;
+    },
+
+    set setGain(newGain){
+        this.gain = newGain;
+    },
+
+    get getGainRecord(){
+        return this.gainRecord;
+    },
+
+    set setGainRecord(newGainRecord){
+        this.gainRecord = newGainRecord;
     },
 }
 
@@ -40,5 +58,7 @@ export function actualiseWallet(operator, value){
         playerWallet.actualValue = value;
     }
 
+    playerWallet.gain = playerWallet.actualValue - playerWallet.initialValue;
+    document.querySelector("#player-wallet-difference").innerHTML = `${playerWallet.actualValue - playerWallet.initialValue}`;
     document.querySelector("#actual-player-wallet-value").innerHTML = `${playerWallet.actualValue}`;
 }
