@@ -22,20 +22,14 @@ let dealerCardsDisplay = document.getElementById("dealer-cards");
 let playerCardsDisplay = document.getElementById("player-cards");
 
 let surrenderButtonDisplay = document.getElementById("surrender-button")
-let startButtonDisplay = document.getElementById("start-button")
 let hitButtonDisplay = document.getElementById("hit-button");
 let standButtonDisplay = document.getElementById("stand-button");
-let doubleButtonDisplay = document.getElementById("double-button");
-let splitButtonDisplay = document.getElementById("split-button");
-let insuranceButtonDisplay = document.getElementById("insurance-button");
 
 let restartButtonDisplay = document.getElementById("restart-button");
 let endButtonDisplay = document.getElementById("end-button");
 
 // On click events
 surrenderButtonDisplay.onclick = surrender;
-startButtonDisplay.onclick = newDeck;
-startButtonDisplay.onclick = newDeck;
 hitButtonDisplay.onclick = () => hitMe('player');
 standButtonDisplay.onclick= ()=>setTimeout(()=>dealerPlays(), 600);
 restartButtonDisplay.onclick = replay;
@@ -63,9 +57,9 @@ function startBlackJack() {
         actualiseWallet('-', roundBet)
         document.getElementsByClassName("player-bet-form")[0].classList.add("hidden");
         announcementMessage.textContent = 'La partie commence';
+        document.getElementsByClassName('game-buttons')[0].style.display = "flex";
         document.getElementsByClassName("blackjack-table")[0].classList.remove("hidden");
         newDeck();
-        document.getElementById("hit-button").classList.remove("hidden");
     } else {
         document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", initBlackJackBet('Le montant de votre paris doit être entre 2 et 100 et ne peut pas depasser la valeur de votre porte monnaie.'));
     }
@@ -77,14 +71,25 @@ function surrender() {
     if (playerWallet.getActualValue >= 2) {
         initBlackJackBet('Vous abandonnez, d\'accord voici la moitié de votre mise initiale. On remet ça ?');
     } else {
-        enterCasino();
+        roundEnd();
+    }
+}
+
+function roundEnd(statusMessage){
+    document.getElementsByClassName('game-buttons')[0].style.display = "none";
+    announcementMessage.textContent = "Vous avez perdu et vous n'avez plus assez d'argent pour continuer à jouer dans le casino !";
+    endButtonDisplay.classList.remove("hidden");
+
+    if (playerWallet.getActualValue >= 2){
+        announcementMessage.textContent = statusMessage;
+        restartButtonDisplay.classList.remove("hidden");
+        document.querySelector("#count-draw").innerHTML = `${roundDraw}`;
+        document.querySelector("#count-lose").innerHTML = `${roundLost}`;
+        document.querySelector("#count-victory").innerHTML = `${roundWon}`;
     }
 }
 
 function replay(){
-    document.querySelector("#count-draw").innerHTML = `${roundDraw}`;
-    document.querySelector("#count-lose").innerHTML = `${roundLost}`;
-    document.querySelector("#count-victory").innerHTML = `${roundWon}`;
     resetPlayingArea();
     document.getElementsByClassName("blackjack-table")[0].classList.add("hidden");
     initBlackJackBet("Début de la partie, veuillez donner la valeur de votre mise :")
@@ -110,14 +115,50 @@ async function newDeck() {
         abortController.abort();
     }, 5000);
 
-    document.getElementById("start-button").classList.add("hidden");
-    document.getElementById("hit-button").classList.remove("hidden");
-    document.getElementById("surrender-button").classList.remove("hidden");
-    newHand();
+    fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=4`)
+        .then(res => res.json())
+        .then(res => {
+            hitButtonDisplay.style.display = "block";
+            standButtonDisplay.style.display = "block";
+            surrenderButtonDisplay.style.display = "block";
+
+            dealerCards.push(res.cards[0], res.cards[1])
+            playerCards.push(res.cards[2], res.cards[3])
+
+            dealerCards.forEach((card, i) => {
+                let cardDomElement = document.createElement("img");
+                if(i===0) {
+                    cardDomElement.src = 'src/backcard.svg';
+                    cardDomElement.setAttribute("style","width:226px");
+                    cardDomElement.setAttribute("style","height:314px");
+                } else {
+                    cardDomElement.src = card.image;
+                }
+                dealerCardsDisplay.appendChild(cardDomElement)
+            })
+
+            dealerScore = computeScore(dealerCards);
+
+            playerCards.forEach(card => {
+                let cardDomElement = document.createElement("img");
+                cardDomElement.src = card.image;
+                playerCardsDisplay.appendChild(cardDomElement)
+            })
+
+            playerScore = computeScore(playerCards);
+            if (playerScore === 21) {
+                roundWon += 1;
+                actualiseWallet('+', roundBet * 2);
+                roundEnd("Vous avez gagné ! Voulez vous rejouer ?");
+            }
+            playerScoreDisplay.textContent = `Votre main : ${playerScore}`;
+
+        })
+        .catch(console.error)
 }
 
 function hitMe(target) {
-    document.getElementById("surrender-button").classList.add("hidden");
+    document.getElementById("surrender-button").style.display = "none";
     fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=1`)
         .then(res => res.json())
         .then(res => {
@@ -137,17 +178,13 @@ function hitMe(target) {
                 if (playerScore > 21) {
                     roundLost = true;
                     roundLost += 1;
-                    announcementMessage.textContent = "Vous avez perdu ! Voulez vous rejouer ?"
-                    restartButtonDisplay.classList.remove("hidden");
-                    endButtonDisplay.classList.remove("hidden");
+                    roundEnd("Vous avez perdu ! Voulez vous rejouer ?");
                 }
                 else if (playerScore === 21) {
                     playerScoreDisplay.textContent = `Votre main : ${playerScore}`;
                     roundWon += 1;
                     actualiseWallet('+', roundBet * 2);
-                    announcementMessage.textContent = "Vous avez gagné ! Voulez vous rejouer ?"
-                    restartButtonDisplay.classList.remove("hidden");
-                    endButtonDisplay.classList.remove("hidden");
+                    roundEnd("Vous avez gagné ! Voulez vous rejouer ?");
                 }
             }
 
@@ -163,45 +200,6 @@ function hitMe(target) {
         .catch(console.error)
 }
 
-function newHand() {
-    resetPlayingArea();
-    fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=4`)
-        .then(res => res.json())
-        .then(res => {
-            hitButtonDisplay.style.display = "block";
-            standButtonDisplay.style.display = "block";
-
-            dealerCards.push(res.cards[0], res.cards[1])
-            playerCards.push(res.cards[2], res.cards[3])
-
-            dealerCards.forEach((card, i) => {
-                let cardDomElement = document.createElement("img");
-                if(i===0) {
-                    cardDomElement.src = './sbackcard.png';
-                } else {
-                    cardDomElement.src = card.image;
-                }
-                dealerCardsDisplay.appendChild(cardDomElement)
-            })
-
-            playerCards.forEach(card => {
-                let cardDomElement = document.createElement("img");
-                cardDomElement.src = card.image;
-                playerCardsDisplay.appendChild(cardDomElement)
-            })
-
-            playerScore = computeScore(playerCards);
-            if (playerScore === 21) {
-                roundWon += 1;
-                actualiseWallet('+', roundBet * 2);
-                announcementMessage.textContent = "BlackJack! Vous avez gagné !";
-            }
-            playerScoreDisplay.textContent = `Votre main : ${playerScore}`;
-
-        })
-        .catch(console.error)
-}
-
 function dealerPlays() {
     dealerScore = computeScore(dealerCards);
     dealerScoreDisplay.textContent = `Main du dealer : ${dealerScore}`;
@@ -212,29 +210,21 @@ function dealerPlays() {
     else if (dealerScore > 21) {
         roundWon += 1;
         actualiseWallet('+', roundBet * 2);
-        announcementMessage.textContent = "Vous avez gagné ! Voulez vous rejouer ?"
-        restartButtonDisplay.classList.remove("hidden");
-        endButtonDisplay.classList.remove("hidden");
+        roundEnd("Vous avez gagné ! Voulez vous rejouer ?");
     }
     else if (dealerScore > playerScore) {
         roundLost += 1;
-        announcementMessage.textContent = "Vous avez perdu ! Voulez vous rejouer ?"
-        restartButtonDisplay.classList.remove("hidden");
-        endButtonDisplay.classList.remove("hidden");
+        roundEnd("Vous avez perdu ! Voulez vous rejouer ?");
     }
     else if (dealerScore === playerScore) {
         roundDraw += 1;
         actualiseWallet('+', roundBet);
-        announcementMessage.textContent = "Egalité ! Voulez vous rejouer ?"
-        restartButtonDisplay.classList.remove("hidden");
-        endButtonDisplay.classList.remove("hidden");
+        roundEnd("Egalité ! Voulez vous rejouer ?");
     }
     else {
         roundWon += 1;
         actualiseWallet('+', roundBet * 2);
-        announcementMessage.textContent = "Vous avez gagné ! Voulez vous rejouer ?"
-        restartButtonDisplay.classList.remove("hidden");
-        endButtonDisplay.classList.remove("hidden");
+        roundEnd("Vous avez gagné ! Voulez vous rejouer ?");
     }
 }
 

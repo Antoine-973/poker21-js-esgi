@@ -11,7 +11,7 @@
 
         <h1 class="item">Poker 21</h1>
 
-        <img id="description-img" style="width: 20%" src="src/casino-entrance.png">
+        <img id="description-img" style="width: 10%" src="src/casino-entrance.png">
 
         <div class="hidden global-stats">
           <table>
@@ -52,7 +52,7 @@
         </div>
         
         <div id="game-status">
-          Appuyez sur le bouton pour rentrer dans le casino.
+          <h2>Appuyez sur le bouton pour rentrer dans le casino.</h2>
         </div>
 
         <div class="hidden player-wallet item">
@@ -75,14 +75,6 @@
         </div>
 
         <div class="hidden blackjack-table item">
-          <button alt="surrender" id="surrender-button" class="hidden">Abandonner</button>
-          <div class="player">
-            <h3 id="player-score">Main du joueur : 0</h3>
-            <div id="player-cards">
-              <!-- Cards will appear here. -->
-            </div>
-          </div>
-
           <div class="dealer">
             <h3 id="dealer-score">Main du croupier : ?</h3>
             <div id="dealer-cards">
@@ -90,17 +82,19 @@
             </div>
           </div>
 
-          <div class="game-item game-buttons">
-            <button alt="start" id="start-button" class="hidden">Commencer</button>
-            <button alt="draw" id="hit-button" class="hidden">Tirer une carte</button>
-            <button alt="stand" id="stand-button" class="hidden">Rester</button>
-            <button alt="double" id="double-button" class="hidden">Doubler la mise</button>
-            <button alt="split" id="split-button" class="hidden">Partager</button>
-            <button alt="insurance" id="insurance-button" class="hidden">Assurance</button>
+          <div class="player">
+            <h3 id="player-score">Main du joueur : 0</h3>
+            <div id="player-cards">
+              <!-- Cards will appear here. -->
+            </div>
           </div>
 
+          <div class="game-item game-buttons">
+            <button alt="draw" id="hit-button" class="hidden">Tirer une carte</button>
+            <button alt="stand" id="stand-button" class="hidden">Rester</button>
+            <button alt="surrender" id="surrender-button" class="hidden">Abandonner</button>
+          </div>
         </div>
-
       </div>
     </div>
     <script src="src/main.js" type="module"></script>

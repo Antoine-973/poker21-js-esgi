@@ -13,20 +13,28 @@ export function enterCasino(){
 }
 
 function startGame(){
-    playerWallet.setInitialValue = parseInt(document.querySelector('input[id="player-wallet"]').value);
-    actualiseWallet('+',playerWallet.getInitialValue);
-    document.querySelector("#actual-player-wallet-value").innerHTML = `${playerWallet.getActualValue}`;
-    document.getElementsByClassName("player-wallet")[0].classList.add("hidden");
-    document.getElementsByClassName("global-stats")[0].classList.remove("hidden");
-    announcementMessage.textContent = `Vous rentrez dans le casino avec un porte monnaie d'une valeur de ${playerWallet.getInitialValue}€`;
-    initBlackJackBet("Début de la partie, veuillez donner la valeur de votre mise :");
+
+    let walletValue = parseInt(document.querySelector('input[id="player-wallet"]').value);
+
+    if (walletValue >= 2){
+        playerWallet.setInitialValue = parseInt(document.querySelector('input[id="player-wallet"]').value);
+        actualiseWallet('+',playerWallet.getInitialValue);
+        document.querySelector("#actual-player-wallet-value").innerHTML = `${playerWallet.getActualValue}`;
+        document.getElementsByClassName("player-wallet")[0].classList.add("hidden");
+        document.getElementsByClassName("global-stats")[0].classList.remove("hidden");
+        announcementMessage.textContent = `Vous rentrez dans le casino avec un porte monnaie d'une valeur de ${playerWallet.getInitialValue}€`;
+        initBlackJackBet("Début de la partie, veuillez donner la valeur de votre mise :");
+    }
+    else {
+        announcementMessage.textContent = "Vous devez rentré dans le casino avec au moins 2€ pour pouvoir jouer !"
+    }
 }
 
 export function leaveCasino(){
     document.getElementById("description-img").src = "src/casino-entrance.png";
     document.getElementById("restart-button").classList.add("hidden");
     document.getElementById("end-button").classList.add("hidden");
-    //document.getElementsByClassName("global-stats")[0].classList.add("hidden");
+    document.getElementsByClassName("global-stats")[0].classList.add("hidden");
     document.getElementsByClassName("enter-casino-button")[0].classList.remove("hidden");
 
     if (playerWallet.getActualValue === 0){
