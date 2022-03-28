@@ -2,7 +2,7 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8">
-    <title>Poker21</title>
+    <title>Poker 21</title>
     <link rel="stylesheet" href="src/style.css">
     <link rel="icon" href="src/Assets/Img/favicon.ico">
   </head>
@@ -10,12 +10,12 @@
       <div class="container">
 
         <div class="title-item">
-          <h1>Poker 21</h1>
+          <h1>POKER 21</h1>
         </div>
 
         <div class="hidden global-stats stat-item">
           <div>
-              <div>Record de gain</div>
+              <div>Gain record du casino</div>
               <div id="gain-record">0</div>
           </div>
           <div>
@@ -27,19 +27,19 @@
             <div id="actual-player-wallet-value">0</div>
           </div>
           <div>
-            <div>Gain / Perte</div>
+            <div>Gains / Pertes</div>
             <div id="player-wallet-difference">0</div>
           </div>
           <div>
-            <div>Victoire</div>
+            <div>Victoire(s)</div>
             <div id="count-victory">0</div>
           </div>
           <div>
-            <div>Defaite</div>
+            <div>Défaite(s)</div>
             <div id="count-lose">0</div>
           </div>
           <div>
-            <div>Egalité</div>
+            <div>Egalité(s)</div>
             <div id="count-draw">0</div>
           </div>
         </div>
@@ -49,21 +49,21 @@
         </div>
 
         <div id="game-status" class="game-status-item">
-          <h5>Appuyez sur le bouton pour rentrer dans le casino.</h5>
+          <h5>Cliquez sur le bouton pour entrer dans le casino.</h5>
         </div>
 
         <div class="enter-casino-button enter-casino-item">
-          <button alt="enter-casino-button" class="enter-casino-button">Rentrer dans le casino</button>
+          <button alt="enter-casino-button" class="enter-casino-button">Entrer dans le casino</button>
         </div>
 
         <div class="hidden player-wallet player-wallet-item">
           <label for="player-wallet">Montant de votre porte monnaie :</label>
           <input type="number" name="player-wallet" id="player-wallet" max="100">
-          <button class="confirm-wallet-amount-button">Confirmer la valeur du porte monnaie</button>
+          <button class="confirm-wallet-amount-button">Confirmer</button>
         </div>
 
         <div class="hidden player-bet-form player-bet-item">
-          <label for="player-bet">Montant du pari (Minimum 2, Maximum 100):</label>
+          <label for="player-bet">Montant du pari (minimum 2€, maximum 100€):</label>
           <input type="number" name="player-bet" id="player-bet" min="2" max="100">
           <button class="confirm-bet-button">Parier</button>
         </div>
@@ -88,17 +88,17 @@
             </div>
 
             <div class="dealer-score">
-              <h6 id="dealer-score">Main du croupier : ?</h6>
+              <h4 id="dealer-score">Main du croupier : ?</h4>
             </div>
 
             <div class="player-score">
-              <h6 id="player-score">Main du joueur : 0</h6>
+              <h4 id="player-score">Main du joueur : 0</h4>
             </div>
 
             <div class="game-buttons-item game-buttons">
               <button alt="surrender" id="surrender-button" class="hidden">Abandonner</button>
               <button alt="draw" id="hit-button" class="hidden">Tirer une carte</button>
-              <button alt="stand" id="stand-button" class="hidden">Rester</button>
+              <button alt="stand" id="stand-button" class="hidden">Restez</button>
             </div>
           </div>
         </div>

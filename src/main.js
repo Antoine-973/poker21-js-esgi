@@ -8,7 +8,7 @@ export function enterCasino(){
     document.getElementById("gain-record").innerHTML = playerWallet.getGainRecord;
     document.getElementsByClassName("player-wallet")[0].classList.remove("hidden");
     document.getElementsByClassName("enter-casino-button")[0].classList.add("hidden");
-    announcementMessage.textContent = "Avec quel somme rentré vous dans le casino ?";
+    announcementMessage.textContent = "Avec quelle somme rentrez-vous dans le casino ?";
     document.getElementsByClassName("confirm-wallet-amount-button")[0].addEventListener("click", startGame);
 }
 
@@ -23,10 +23,10 @@ function startGame(){
         document.getElementsByClassName("player-wallet")[0].classList.add("hidden");
         document.getElementsByClassName("global-stats")[0].classList.remove("hidden");
         announcementMessage.textContent = `Vous rentrez dans le casino avec un porte monnaie d'une valeur de ${playerWallet.getInitialValue}€`;
-        initBlackJackBet("Début de la partie, veuillez donner la valeur de votre mise :");
+        initBlackJackBet("Début de la partie ! Veuillez donner le montant de votre mise :");
     }
     else {
-        announcementMessage.textContent = "Vous devez rentré dans le casino avec au moins 2€ pour pouvoir jouer !"
+        announcementMessage.textContent = "Vous devez rentrer dans le casino avec au minimum 2€ pour pouvoir jouer !"
     }
 }
 
@@ -39,14 +39,14 @@ export function leaveCasino(){
     document.getElementsByClassName("enter-casino-button")[0].classList.remove("hidden");
 
     if (playerWallet.getActualValue === 0){
-        announcementMessage.textContent = `Perdu, plus d'argent ! Vous quittez le casino avec un déficite de ${playerWallet.initialValue}€ !`;
+        announcementMessage.textContent = `Vous êtes à sec ! Vous n'avez rien gagné ormis la perte de ${playerWallet.initialValue}€ !`;
     }
     else if (playerWallet.getActualValue !== 0 && playerWallet.getGain > playerWallet.gainRecord){
         playerWallet.setGainRecord = playerWallet.getGain;
-        announcementMessage.textContent = ` Record de gain ! Vous quittez le casino avec un gain de : ${playerWallet.gain}€ ! Vous étiez rentrer avec un montant de : ${playerWallet.initialValue}€ !`;
+        announcementMessage.textContent = ` Bravo ! Gain record du casino ! Vous quittez le casino avec un gain de ${playerWallet.gain}€ ! A votre entrée, vous aviez un montant de : ${playerWallet.initialValue}€ !`;
     }
     else if (playerWallet.getActualValue !== 0){
-        announcementMessage.textContent = `Vous quittez le casino avec un gain de : ${playerWallet.gain}€ ! Vous étiez rentrer avec un montant de : ${playerWallet.initialValue}€ !`;
+        announcementMessage.textContent = `Vous quittez le casino avec un gain de : ${playerWallet.gain}€ ! A votre entrée, vous aviez un montant de : ${playerWallet.initialValue}€ !`;
     }
 }
 

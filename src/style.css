@@ -26,6 +26,7 @@ body{
     color: white;
     flex-flow: column nowrap;
     place-items: stretch;
+    gap: 5px;
 }
 
 .title-item{
@@ -38,9 +39,7 @@ body{
 
 .stat-item{
     flex-flow: row wrap;
-    place-self: stretch;
     display: flex;
-    place-items: stretch;
     gap: 1rem;
     justify-content: center;
     align-items: center;
@@ -49,6 +48,12 @@ body{
 
 .game-status-item{
     text-align: center;
+    background-color: #730068;
+    flex-flow: row wrap;
+    place-self: center;
+    display: flex;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .player-wallet-item{
@@ -82,6 +87,7 @@ body{
 }
 
 .cards{
+    margin-top: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -163,6 +169,7 @@ input:focus{
     justify-content: stretch;
     max-height: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 .blackjack-table{
@@ -220,10 +227,6 @@ input:focus{
     grid-column-end: 2;
     grid-row-start: 2;
     grid-row-end: 2;
-}
-
-#game-status-item {
-    text-align: center;
 }
 
 .hidden{

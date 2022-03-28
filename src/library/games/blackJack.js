@@ -1,5 +1,5 @@
 import {actualiseWallet, playerWallet} from '../stats/playerWallet.js'
-import {enterCasino, announcementMessage, leaveCasino} from "../../main.js";
+import {announcementMessage, leaveCasino} from "../../main.js";
 
 let deckID = "";
 let remainingCards = 0;
@@ -56,12 +56,13 @@ function startBlackJack() {
     if (roundBet <= playerWallet.getActualValue && roundBet >= 2 && roundBet <= 100) {
         actualiseWallet('-', roundBet)
         document.getElementsByClassName("player-bet-form")[0].classList.add("hidden");
-        announcementMessage.textContent = 'La partie commence';
+        document.getElementsByClassName("title-item")[0].classList.add("hidden");
+        announcementMessage.textContent = 'La partie commence !';
         document.getElementsByClassName('game-buttons')[0].style.display = "flex";
         document.getElementsByClassName("blackjack-table")[0].classList.remove("hidden");
         newDeck();
     } else {
-        document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", initBlackJackBet('Le montant de votre paris doit être entre 2 et 100 et ne peut pas depasser la valeur de votre porte monnaie.'));
+        document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", initBlackJackBet('Le montant de votre pari doit être compris entre 2€ et 100€'));
     }
 }
 
@@ -69,7 +70,7 @@ function surrender() {
     document.getElementsByClassName("blackjack-table")[0].classList.add("hidden");
     actualiseWallet('+', roundBet / 2);
     if (playerWallet.getActualValue >= 2) {
-        initBlackJackBet('Vous abandonnez, d\'accord voici la moitié de votre mise initiale. On remet ça ?');
+        initBlackJackBet('Vous abandonnez ! Pas de soucis voici la moitié de votre mise initiale. On remet ça ?');
     } else {
         roundEnd();
     }
@@ -77,7 +78,7 @@ function surrender() {
 
 function roundEnd(statusMessage){
     document.getElementsByClassName('game-buttons')[0].style.display = "none";
-    announcementMessage.textContent = "Vous avez perdu et vous n'avez plus assez d'argent pour continuer à jouer dans le casino !";
+    announcementMessage.textContent = "Vous avez perdu ! Rechargez votre porte-monnaie pour pouvoir rejouer !";
     endButtonDisplay.classList.remove("hidden");
 
     if (playerWallet.getActualValue >= 2){
@@ -127,10 +128,10 @@ async function newDeck() {
 
             dealerCards.forEach((card, i) => {
                 let cardDomElement = document.createElement("img");
-                cardDomElement.setAttribute("style", "max-width:100px");
+                cardDomElement.setAttribute("style", "max-width:140px");
                 if(i===0) {
                     cardDomElement.src = 'src/backcard.svg';
-                    cardDomElement.setAttribute("style", "max-width:100px");
+                    cardDomElement.setAttribute("style", "max-width:140px");
                 } else {
                     cardDomElement.src = card.image;
                 }
@@ -141,7 +142,7 @@ async function newDeck() {
 
             playerCards.forEach(card => {
                 let cardDomElement = document.createElement("img");
-                cardDomElement.setAttribute("style", "max-width:100px");
+                cardDomElement.setAttribute("style", "max-width:140px");
                 cardDomElement.src = card.image;
                 playerCardsDisplay.appendChild(cardDomElement)
             })
@@ -170,7 +171,7 @@ function hitMe(target) {
 
                 playerCards.push(res.cards[0])
                 let cardDomElement = document.createElement("img");
-                cardDomElement.setAttribute("style", "max-width:100px");
+                cardDomElement.setAttribute("style", "max-width:140px");
                 cardDomElement.src = res.cards[0].image;
                 playerCardsDisplay.appendChild(cardDomElement)
 
@@ -192,7 +193,7 @@ function hitMe(target) {
 
             if (target === 'dealer') {
                 let cardDomElement = document.createElement("img");
-                cardDomElement.setAttribute("style", "max-width:100px");
+                cardDomElement.setAttribute("style", "max-width:140px");
                 dealerCards.push(res.cards[0])
                 cardDomElement.src = res.cards[0].image;
                 dealerCardsDisplay.appendChild(cardDomElement)
@@ -213,21 +214,21 @@ function dealerPlays() {
     else if (dealerScore > 21) {
         roundWon += 1;
         actualiseWallet('+', roundBet * 2);
-        roundEnd("Vous avez gagné ! Voulez vous rejouer ?");
+        roundEnd("Bravo ! Vous avez gagner ! On continue sur cette lancée ?");
     }
     else if (dealerScore > playerScore) {
         roundLost += 1;
-        roundEnd("Vous avez perdu ! Voulez vous rejouer ?");
+        roundEnd("Oups… c’est perdu ! Voulez-vous retenter votre chance ?");
     }
     else if (dealerScore === playerScore) {
         roundDraw += 1;
         actualiseWallet('+', roundBet);
-        roundEnd("Egalité ! Voulez vous rejouer ?");
+        roundEnd("Égalité ! Voulez - vous retenter votre chance ?");
     }
     else {
         roundWon += 1;
         actualiseWallet('+', roundBet * 2);
-        roundEnd("Vous avez gagné ! Voulez vous rejouer ?");
+        roundEnd("Bravo ! Vous avez gagner ! On continue sur cette lancée ?");
     }
 }
 
