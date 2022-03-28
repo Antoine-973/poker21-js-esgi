@@ -6,98 +6,102 @@
     <link rel="stylesheet" href="src/style.css">
     <link rel="icon" href="src/Assets/Img/favicon.ico">
   </head>
-  <body style="background-color: red">
-    <div class="container">
-      <div class="col">
+  <body>
+      <div class="container">
 
-        <h1 class="item">Poker 21</h1>
-
-        <img id="description-img" style="width: 10%" src="src/casino-entrance.png">
-
-        <div class="hidden global-stats">
-          <table>
-            <thead>
-              <tr colspan="2">Statistiques</tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Record de gain</td>
-                <td id="gain-record">0</td>
-              </tr>
-              <tr>
-                <td>Porte-monnaie du joueur initial</td>
-                <td id="initial-player-wallet-value">0</td>
-              </tr>
-              <tr>
-                <td>Porte-monnaie du joueur actuel</td>
-                <td id="actual-player-wallet-value">0</td>
-              </tr>
-              <tr>
-                <td>Gain / Perte</td>
-                <td id="player-wallet-difference">0</td>
-              </tr>
-              <tr>
-                <td>Victoire</td>
-                <td id="count-victory">0</td>
-              </tr>
-              <tr>
-                <td>Defaite</td>
-                <td id="count-lose">0</td>
-              </tr>
-              <tr>
-                <td>Egalité</td>
-                <td id="count-draw">0</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <div id="game-status">
-          <h2>Appuyez sur le bouton pour rentrer dans le casino.</h2>
+        <div class="title-item">
+          <h1>Poker 21</h1>
         </div>
 
-        <div class="hidden player-wallet item">
+        <div class="hidden global-stats stat-item">
+          <div>
+              <div>Record de gain</div>
+              <div id="gain-record">0</div>
+          </div>
+          <div>
+              <div>Montant initial</div>
+              <div id="initial-player-wallet-value">0</div>
+          </div>
+          <div>
+            <div>Montant actuel</div>
+            <div id="actual-player-wallet-value">0</div>
+          </div>
+          <div>
+            <div>Gain / Perte</div>
+            <div id="player-wallet-difference">0</div>
+          </div>
+          <div>
+            <div>Victoire</div>
+            <div id="count-victory">0</div>
+          </div>
+          <div>
+            <div>Defaite</div>
+            <div id="count-lose">0</div>
+          </div>
+          <div>
+            <div>Egalité</div>
+            <div id="count-draw">0</div>
+          </div>
+        </div>
+
+        <div class="description-img-item">
+          <img id="description-img" src="src/casino-entrance.png">
+        </div>
+
+        <div id="game-status" class="game-status-item">
+          <h5>Appuyez sur le bouton pour rentrer dans le casino.</h5>
+        </div>
+
+        <div class="enter-casino-button enter-casino-item">
+          <button alt="enter-casino-button" class="enter-casino-button">Rentrer dans le casino</button>
+        </div>
+
+        <div class="hidden player-wallet player-wallet-item">
           <label for="player-wallet">Montant de votre porte monnaie :</label>
           <input type="number" name="player-wallet" id="player-wallet" max="100">
           <button class="confirm-wallet-amount-button">Confirmer la valeur du porte monnaie</button>
         </div>
 
-        <button alt="enter-casino-button" class="enter-casino-button">Rentrer dans le casino</button>
-
-        <div class="hidden player-bet-form item">
+        <div class="hidden player-bet-form player-bet-item">
           <label for="player-bet">Montant du pari (Minimum 2, Maximum 100):</label>
           <input type="number" name="player-bet" id="player-bet" min="2" max="100">
           <button class="confirm-bet-button">Parier</button>
         </div>
 
-        <div class="end-round-buttons">
+        <div class="end-round-buttons end-round-item">
           <button alt="restart" id="restart-button" class="hidden">Rejouer une partie</button>
           <button alt="end" id="end-button" class="hidden">Quitter le casino</button>
         </div>
 
-        <div class="hidden blackjack-table item">
-          <div class="dealer">
-            <h3 id="dealer-score">Main du croupier : ?</h3>
-            <div id="dealer-cards">
-              <!-- Cards will appear here. -->
-            </div>
-          </div>
+        <div class="blackjack-table-item">
+          <div class="hidden blackjack-table">
+            <div class="dealer">
+              <div class="cards" id="dealer-cards">
 
-          <div class="player">
-            <h3 id="player-score">Main du joueur : 0</h3>
-            <div id="player-cards">
-              <!-- Cards will appear here. -->
+              </div>
             </div>
-          </div>
 
-          <div class="game-item game-buttons">
-            <button alt="draw" id="hit-button" class="hidden">Tirer une carte</button>
-            <button alt="stand" id="stand-button" class="hidden">Rester</button>
-            <button alt="surrender" id="surrender-button" class="hidden">Abandonner</button>
+            <div class="player">
+              <div class="cards" id="player-cards">
+
+              </div>
+            </div>
+
+            <div class="dealer-score">
+              <h6 id="dealer-score">Main du croupier : ?</h6>
+            </div>
+
+            <div class="player-score">
+              <h6 id="player-score">Main du joueur : 0</h6>
+            </div>
+
+            <div class="game-buttons-item game-buttons">
+              <button alt="surrender" id="surrender-button" class="hidden">Abandonner</button>
+              <button alt="draw" id="hit-button" class="hidden">Tirer une carte</button>
+              <button alt="stand" id="stand-button" class="hidden">Rester</button>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
     <script src="src/main.js" type="module"></script>
   </body>
 </html>

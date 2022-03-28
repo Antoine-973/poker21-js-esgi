@@ -31,6 +31,7 @@ function startGame(){
 }
 
 export function leaveCasino(){
+    document.getElementsByClassName("blackjack-table")[0].classList.add("hidden");
     document.getElementById("description-img").src = "src/casino-entrance.png";
     document.getElementById("restart-button").classList.add("hidden");
     document.getElementById("end-button").classList.add("hidden");

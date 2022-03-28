@@ -127,10 +127,10 @@ async function newDeck() {
 
             dealerCards.forEach((card, i) => {
                 let cardDomElement = document.createElement("img");
+                cardDomElement.setAttribute("style", "max-width:100px");
                 if(i===0) {
                     cardDomElement.src = 'src/backcard.svg';
-                    cardDomElement.setAttribute("style","width:226px");
-                    cardDomElement.setAttribute("style","height:314px");
+                    cardDomElement.setAttribute("style", "max-width:100px");
                 } else {
                     cardDomElement.src = card.image;
                 }
@@ -141,6 +141,7 @@ async function newDeck() {
 
             playerCards.forEach(card => {
                 let cardDomElement = document.createElement("img");
+                cardDomElement.setAttribute("style", "max-width:100px");
                 cardDomElement.src = card.image;
                 playerCardsDisplay.appendChild(cardDomElement)
             })
@@ -169,6 +170,7 @@ function hitMe(target) {
 
                 playerCards.push(res.cards[0])
                 let cardDomElement = document.createElement("img");
+                cardDomElement.setAttribute("style", "max-width:100px");
                 cardDomElement.src = res.cards[0].image;
                 playerCardsDisplay.appendChild(cardDomElement)
 
@@ -190,6 +192,7 @@ function hitMe(target) {
 
             if (target === 'dealer') {
                 let cardDomElement = document.createElement("img");
+                cardDomElement.setAttribute("style", "max-width:100px");
                 dealerCards.push(res.cards[0])
                 cardDomElement.src = res.cards[0].image;
                 dealerCardsDisplay.appendChild(cardDomElement)
