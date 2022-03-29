@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Poker 21</title>
     <link rel="stylesheet" href="src/style.css">
-    <link rel="icon" href="src/Assets/Img/favicon.ico">
+    <link rel="icon" href="public/images/favicon.ico">
   </head>
   <body>
       <div class="container">
@@ -45,7 +45,7 @@
         </div>
 
         <div class="description-img-item">
-          <img id="description-img" src="src/casino-entrance.png">
+          <img id="description-img" src="public/images/casino-entrance.png">
         </div>
 
         <div id="game-status" class="game-status-item">
@@ -96,12 +96,15 @@
             </div>
 
             <div class="game-buttons-item game-buttons">
-              <button alt="surrender" id="surrender-button" class="hidden">Abandonner</button>
               <button alt="draw" id="hit-button" class="hidden">Tirer une carte</button>
+
+              <button alt="surrender" id="surrender-button" class="hidden">Abandonner</button>
+
               <button alt="stand" id="stand-button" class="hidden">Restez</button>
             </div>
           </div>
         </div>
+      </div>
     <script src="src/main.js" type="module"></script>
   </body>
 </html>

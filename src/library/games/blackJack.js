@@ -10,8 +10,9 @@ let roundWon = 0;
 let roundDraw = 0;
 let playerScore = 0;
 let dealerScore = 0;
-
+let gameStarted = 0;
 let roundBet = 0;
+let turn = 1;
 
 // display of the score of the game
 let dealerScoreDisplay = document.getElementById("dealer-score");
@@ -35,6 +36,30 @@ standButtonDisplay.onclick= ()=>setTimeout(()=>dealerPlays(), 600);
 restartButtonDisplay.onclick = replay;
 endButtonDisplay.onclick = leaveCasino;
 
+// On keydown events
+document.addEventListener('keydown', (event) => {
+    let name = event.key;
+    let code = event.code;
+    console.log(`Key pressed ${name} \r\n Key code value: ${code}`)
+    console.log(gameStarted)
+    if (gameStarted === 1){
+        if (name === 'ArrowDown'){
+            if (turn === 1){
+                surrender()
+            }
+        }
+        else if (name === 'ArrowRight'){
+            setTimeout(()=>dealerPlays(), 600);
+        }
+        else if (name === 'ArrowLeft'){
+            hitMe('player');
+        }
+    }
+
+    // Alert the key name and key code on keydown
+    //alert(`Key pressed ${name} \r\n Key code value: ${code}`);
+}, false);
+
 export function initBlackJackBet(statusMessage) {
     if (playerWallet.getActualValue === 0){
         resetPlayingArea();
@@ -44,7 +69,7 @@ export function initBlackJackBet(statusMessage) {
     else {
         restartButtonDisplay.classList.add("hidden");
         endButtonDisplay.classList.add("hidden");
-        document.getElementById("description-img").src = "src/dealer.png";
+        document.getElementById("description-img").src = "public/images/dealer.png";
         announcementMessage.textContent = `${statusMessage}`;
         document.getElementsByClassName("player-bet-form")[0].classList.remove("hidden");
         document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", startBlackJack);
@@ -54,6 +79,7 @@ export function initBlackJackBet(statusMessage) {
 function startBlackJack() {
     roundBet = parseInt(document.querySelector('input[id="player-bet"]').value);
     if (roundBet <= playerWallet.getActualValue && roundBet >= 2 && roundBet <= 100) {
+        gameStarted = 1;
         actualiseWallet('-', roundBet)
         document.getElementsByClassName("player-bet-form")[0].classList.add("hidden");
         document.getElementsByClassName("title-item")[0].classList.add("hidden");
@@ -130,7 +156,7 @@ async function newDeck() {
                 let cardDomElement = document.createElement("img");
                 cardDomElement.setAttribute("style", "max-width:140px");
                 if(i===0) {
-                    cardDomElement.src = 'src/backcard.svg';
+                    cardDomElement.src = 'public/images/backcard.svg';
                     cardDomElement.setAttribute("style", "max-width:140px");
                 } else {
                     cardDomElement.src = card.image;
@@ -160,6 +186,7 @@ async function newDeck() {
 }
 
 function hitMe(target) {
+    turn += 1;
     document.getElementById("surrender-button").style.display = "none";
     fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=1`)
         .then(res => res.json())
@@ -205,6 +232,7 @@ function hitMe(target) {
 }
 
 function dealerPlays() {
+    turn += 1;
     dealerScore = computeScore(dealerCards);
     dealerScoreDisplay.textContent = `Main du dealer : ${dealerScore}`;
     dealerCardsDisplay.firstChild.src = dealerCards[0].image;
