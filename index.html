@@ -2,6 +2,7 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Poker 21</title>
     <link rel="stylesheet" href="src/style.css">
     <link rel="icon" href="public/images/favicon.ico">
@@ -81,6 +82,11 @@
               </div>
             </div>
 
+            <div class="deck">
+              <img id="deck-card" src="public/images/backcard.svg">
+              <h4 id="card-count"></h4>
+            </div>
+
             <div class="player">
               <div class="cards" id="player-cards">
 
@@ -104,6 +110,8 @@
             </div>
           </div>
         </div>
+
+        <small class="status">Hello</small>
       </div>
     <script src="src/main.js" type="module"></script>
   </body>

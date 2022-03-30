@@ -16,6 +16,7 @@ body{
 }
 
 .container{
+    height: 100vh;
     min-height: 100%;
     flex-basis: auto;
     flex-grow: 1;
@@ -176,7 +177,7 @@ input:focus{
     background: #35654D;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
@@ -186,27 +187,53 @@ input:focus{
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
+    align-items: center;
     grid-column-start: 1;
     grid-column-end: 1;
     grid-row-start: 1;
     grid-row-end: 1;
 }
 
+.deck{
+    display: flex;
+    flex-flow: column wrap;
+    align-content: center;
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    column-gap: 0;
+}
+
+#deck-card{
+    box-shadow: 2px 2px 2px white,
+    1px 1px 1px black,
+    2px 2px 2px white,
+    1px 1px 1px black,
+    2px 2px 2px white,
+    3px 3px 3px black;
+    max-width:140px;
+}
+
+#card-count{
+    flex-basis : 5%;
+}
+
 .dealer{
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    grid-column-start: 2;
-    grid-column-end: 2;
+    grid-column-start: 3;
+    grid-column-end: 3;
     grid-row-start: 1;
     grid-row-end: 1;
 }
 
 .game-buttons{
     grid-column-start: 1;
-    grid-column-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 3;
 }
 
 .player-score{
@@ -215,20 +242,53 @@ input:focus{
     justify-content: center;
     grid-column-start: 1;
     grid-column-end: 1;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 1;
 }
 
 .dealer-score{
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    grid-column-start: 2;
-    grid-column-end: 2;
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-column-start: 3;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 1;
 }
 
 .hidden{
     display: none;
+}
+
+.status{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.status.online {
+    color: #41a700;
+}
+.status.offline {
+    color: #f15c4f;
+}
+
+.win-animation
+{
+    -webkit-transform: translateY(-400px) rotate(1080deg);
+    -webkit-transition: -webkit-transform 1s;
+}
+
+.lose-animation
+{
+    -webkit-transform: translateX(-400px) rotate(1080deg);
+    -webkit-transition: -webkit-transform 1s;
+}
+
+
+.draw-animation
+{
+    -webkit-transform: translateX(200px) rotate(1080deg);
+    -webkit-transition: -webkit-transform 1s;
 }

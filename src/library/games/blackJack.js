@@ -1,6 +1,18 @@
 import {actualiseWallet, playerWallet} from '../stats/playerWallet.js'
 import {announcementMessage, leaveCasino} from "../../main.js";
 
+window.addEventListener("load", () => {
+    hasNetwork(navigator.onLine);
+    window.addEventListener("online", () => {
+        // Set hasNetwork to online when they change to online.
+        hasNetwork(true);
+    });
+    window.addEventListener("offline", () => {
+        // Set hasNetwork to offline when they change to offline.
+        hasNetwork(false);
+    });
+});
+
 let deckID = "";
 let remainingCards = 0;
 let dealerCards = [];
@@ -15,6 +27,7 @@ let roundBet = 0;
 let turn = 1;
 
 // display of the score of the game
+let deckCardCountDisplay = document.getElementById("card-count");
 let dealerScoreDisplay = document.getElementById("dealer-score");
 let playerScoreDisplay = document.getElementById("player-score");
 
@@ -39,9 +52,7 @@ endButtonDisplay.onclick = leaveCasino;
 // On keydown events
 document.addEventListener('keydown', (event) => {
     let name = event.key;
-    let code = event.code;
-    console.log(`Key pressed ${name} \r\n Key code value: ${code}`)
-    console.log(gameStarted)
+
     if (gameStarted === 1){
         if (name === 'ArrowDown'){
             if (turn === 1){
@@ -98,21 +109,39 @@ function surrender() {
     if (playerWallet.getActualValue >= 2) {
         initBlackJackBet('Vous abandonnez ! Pas de soucis voici la moitié de votre mise initiale. On remet ça ?');
     } else {
-        roundEnd();
+        roundEnd('lose');
     }
 }
 
-function roundEnd(statusMessage){
+function roundEnd(status, statusMessage){
     document.getElementsByClassName('game-buttons')[0].style.display = "none";
-    announcementMessage.textContent = "Vous avez perdu ! Rechargez votre porte-monnaie pour pouvoir rejouer !";
-    endButtonDisplay.classList.remove("hidden");
 
     if (playerWallet.getActualValue >= 2){
+        if (status === 'win'){
+            document.querySelector("#player-cards").classList.add("win-animation");
+            setTimeout(() => {document.querySelector("#player-cards").classList.remove("win-animation")}, 1000);
+            document.querySelector("#count-victory").innerHTML = `${roundWon}`;
+        }
+        else if (status === 'lose') {
+            document.querySelector("#dealer-cards").classList.add("lose-animation");
+            setTimeout(() => {document.querySelector("#dealer-cards").classList.remove("lose-animation")}, 1000);
+            document.querySelector("#count-lose").innerHTML = `${roundLost}`;
+        }
+        else if (status === 'draw'){
+            document.querySelector("#player-cards").classList.add("draw-animation");
+            document.querySelector("#dealer-cards").classList.add("draw-animation");
+            setTimeout(() => {document.querySelector("#player-cards").classList.remove("draw-animation")}, 1000);
+            setTimeout(() => {document.querySelector("#dealer-cards").classList.remove("draw-animation")}, 1000);
+            document.querySelector("#count-draw").innerHTML = `${roundDraw}`;
+        }
         announcementMessage.textContent = statusMessage;
         restartButtonDisplay.classList.remove("hidden");
-        document.querySelector("#count-draw").innerHTML = `${roundDraw}`;
-        document.querySelector("#count-lose").innerHTML = `${roundLost}`;
-        document.querySelector("#count-victory").innerHTML = `${roundWon}`;
+    }
+    else {
+        document.querySelector("#dealer-cards").classList.add("lose-animation");
+        setTimeout(() => {document.querySelector("#dealer-cards").classList.remove("lose-animation")}, 1000);
+        announcementMessage.textContent = "Vous avez perdu ! Rechargez votre porte-monnaie pour pouvoir rejouer !";
+        endButtonDisplay.classList.remove("hidden");
     }
 }
 
@@ -125,7 +154,7 @@ function replay(){
 async function newDeck() {
     resetPlayingArea();
     const abortController = new AbortController();
-    await fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
+    await fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
         .then(function (response) {
             if (response.ok) {
                 return response.json();
@@ -134,6 +163,7 @@ async function newDeck() {
         }).then(function (data) {
             deckID = data.deck_id;
             remainingCards = data.remaining;
+            deckCardCountDisplay.textContent = `${remainingCards} cartes`;
         }).catch(function (error) {
             console.log(error.message);
         });
@@ -151,6 +181,8 @@ async function newDeck() {
 
             dealerCards.push(res.cards[0], res.cards[1])
             playerCards.push(res.cards[2], res.cards[3])
+            remainingCards -= 4;
+            deckCardCountDisplay.textContent = `${remainingCards} cartes`;
 
             dealerCards.forEach((card, i) => {
                 let cardDomElement = document.createElement("img");
@@ -177,7 +209,7 @@ async function newDeck() {
             if (playerScore === 21) {
                 roundWon += 1;
                 actualiseWallet('+', roundBet * 2);
-                roundEnd("Vous avez gagné ! Voulez vous rejouer ?");
+                roundEnd('win',"Vous avez gagné ! Voulez vous rejouer ?");
             }
             playerScoreDisplay.textContent = `Votre main : ${playerScore}`;
 
@@ -197,6 +229,8 @@ function hitMe(target) {
                 standButtonDisplay.style.display = "block";
 
                 playerCards.push(res.cards[0])
+                remainingCards -= 1;
+                deckCardCountDisplay.textContent = `${remainingCards} cartes`;
                 let cardDomElement = document.createElement("img");
                 cardDomElement.setAttribute("style", "max-width:140px");
                 cardDomElement.src = res.cards[0].image;
@@ -208,13 +242,13 @@ function hitMe(target) {
                 if (playerScore > 21) {
                     roundLost = true;
                     roundLost += 1;
-                    roundEnd("Vous avez perdu ! Voulez vous rejouer ?");
+                    roundEnd('lose',"Vous avez perdu ! Voulez vous rejouer ?");
                 }
                 else if (playerScore === 21) {
                     playerScoreDisplay.textContent = `Votre main : ${playerScore}`;
                     roundWon += 1;
                     actualiseWallet('+', roundBet * 2);
-                    roundEnd("Vous avez gagné ! Voulez vous rejouer ?");
+                    roundEnd('win',"Vous avez gagné ! Voulez vous rejouer ?");
                 }
             }
 
@@ -222,6 +256,8 @@ function hitMe(target) {
                 let cardDomElement = document.createElement("img");
                 cardDomElement.setAttribute("style", "max-width:140px");
                 dealerCards.push(res.cards[0])
+                remainingCards -= 1;
+                deckCardCountDisplay.textContent = `${remainingCards} cartes`;
                 cardDomElement.src = res.cards[0].image;
                 dealerCardsDisplay.appendChild(cardDomElement)
                 dealerPlays();
@@ -242,21 +278,21 @@ function dealerPlays() {
     else if (dealerScore > 21) {
         roundWon += 1;
         actualiseWallet('+', roundBet * 2);
-        roundEnd("Bravo ! Vous avez gagner ! On continue sur cette lancée ?");
+        roundEnd('win',"Bravo ! Vous avez gagner ! On continue sur cette lancée ?");
     }
     else if (dealerScore > playerScore) {
         roundLost += 1;
-        roundEnd("Oups… c’est perdu ! Voulez-vous retenter votre chance ?");
+        roundEnd('lose',"Oups… c’est perdu ! Voulez-vous retenter votre chance ?");
     }
     else if (dealerScore === playerScore) {
         roundDraw += 1;
         actualiseWallet('+', roundBet);
-        roundEnd("Égalité ! Voulez - vous retenter votre chance ?");
+        roundEnd('draw',"Égalité ! Voulez - vous retenter votre chance ?");
     }
     else {
         roundWon += 1;
         actualiseWallet('+', roundBet * 2);
-        roundEnd("Bravo ! Vous avez gagner ! On continue sur cette lancée ?");
+        roundEnd('win',"Bravo ! Vous avez gagner ! On continue sur cette lancée ?");
     }
 }
 
@@ -290,5 +326,19 @@ function resetPlayingArea() {
     }
     while (playerCardsDisplay.firstChild) {
         playerCardsDisplay.removeChild(playerCardsDisplay.firstChild);
+    }
+}
+
+function hasNetwork(online) {
+    const element = document.querySelector(".status");
+    // Update the DOM to reflect the current status
+    if (online) {
+        element.classList.remove("offline");
+        element.classList.add("online");
+        element.innerText = "Online";
+    } else {
+        element.classList.remove("online");
+        element.classList.add("offline");
+        element.innerText = "Offline";
     }
 }
