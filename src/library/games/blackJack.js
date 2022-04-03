@@ -221,7 +221,6 @@ async function newDeck() {
 function hitMe(target)
 
 {
-
     turn += 1;
     document.getElementById("surrender-button").style.display = "none";
     fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=1`)
@@ -232,8 +231,7 @@ function hitMe(target)
                 hitButtonDisplay.style.display = "block";
                 standButtonDisplay.style.display = "block";
                 // console.log(cardToFlip)
-                // cardToFlip.classList.add('content-top-card-flip');
-                // return ;
+                cardToFlip.classList.add('content-top-card-flip');
                 playerCards.push(res.cards[0])
                 remainingCards -= 1;
                 deckCardCountDisplay.textContent = `${remainingCards} cartes`;
@@ -268,9 +266,10 @@ function hitMe(target)
                 dealerCardsDisplay.appendChild(cardDomElement)
                 dealerPlays();
             }
-
         })
         .catch(console.error)
+    setTimeout(() => cardToFlip.classList.remove('content-top-card-flip'),1300)
+    cardToFlip.classList.add('content-top-card-flip');
 }
 
 function dealerPlays() {
