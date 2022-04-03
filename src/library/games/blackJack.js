@@ -52,9 +52,6 @@ endButtonDisplay.onclick = leaveCasino;
 
 // device info
 const ua = navigator.userAgent;
-surrenderButtonDisplay.addEventListener('click', () => {
-    window.navigator.vibrate([200, 100, 200]);
-})
 
 // On keydown events
 document.addEventListener('keydown', (event) => {
@@ -130,7 +127,7 @@ function roundEnd(status, statusMessage){
             document.querySelector("#count-victory").innerHTML = `${roundWon}`;
 
             if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
-                window.navigator.vibrate(1000);
+                window.navigator.vibrate(1500);
             }
         }
         else if (status === 'lose') {
