@@ -1,3 +1,5 @@
+"use strict";
+
 import { initBlackJackBet } from './library/games/blackJack.js'
 import {actualiseWallet, playerWallet} from './library/stats/playerWallet.js'
 
