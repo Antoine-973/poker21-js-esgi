@@ -231,9 +231,9 @@ function hitMe(target)
             if (target === 'player') {
                 hitButtonDisplay.style.display = "block";
                 standButtonDisplay.style.display = "block";
-                console.log(cardToFlip)
-                cardToFlip.classList.add('content-top-card-flip');
-                return ;
+                // console.log(cardToFlip)
+                // cardToFlip.classList.add('content-top-card-flip');
+                // return ;
                 playerCards.push(res.cards[0])
                 remainingCards -= 1;
                 deckCardCountDisplay.textContent = `${remainingCards} cartes`;

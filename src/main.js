@@ -10,7 +10,10 @@ export function enterCasino(){
     document.getElementsByClassName("enter-casino-button")[0].classList.add("hidden");
     announcementMessage.textContent = "Avec quelle somme rentrez-vous dans le casino ?";
     document.getElementsByClassName("confirm-wallet-amount-button")[0].addEventListener("click", startGame);
-    document.getElementsByClassName("content_mobile_icon")[0].style.display= "block";
+    if (window.matchMedia("(max-width: 1024px)").matches) {
+        document.getElementsByClassName("content_mobile_icon")[0].style.display= "block";
+     }
+
 }
 
 function startGame(){

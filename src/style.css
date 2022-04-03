@@ -336,6 +336,13 @@ input:focus{
 
 /** Format mobile */
 @media screen and (max-width: 1024px){
+
+    #card-top, #deck-card{
+        max-width: 100px!important;
+    }
+
+
+
     .stat-item{
         opacity: 0;
         left: -500px;
