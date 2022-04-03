@@ -38,6 +38,7 @@ let playerCardsDisplay = document.getElementById("player-cards");
 let surrenderButtonDisplay = document.getElementById("surrender-button")
 let hitButtonDisplay = document.getElementById("hit-button");
 let standButtonDisplay = document.getElementById("stand-button");
+let cardToFlip = document.querySelector(".content-top-card");
 
 let restartButtonDisplay = document.getElementById("restart-button");
 let endButtonDisplay = document.getElementById("end-button");
@@ -217,7 +218,10 @@ async function newDeck() {
         .catch(console.error)
 }
 
-function hitMe(target) {
+function hitMe(target)
+
+{
+
     turn += 1;
     document.getElementById("surrender-button").style.display = "none";
     fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=1`)
@@ -227,7 +231,9 @@ function hitMe(target) {
             if (target === 'player') {
                 hitButtonDisplay.style.display = "block";
                 standButtonDisplay.style.display = "block";
-
+                console.log(cardToFlip)
+                cardToFlip.classList.add('content-top-card-flip');
+                return ;
                 playerCards.push(res.cards[0])
                 remainingCards -= 1;
                 deckCardCountDisplay.textContent = `${remainingCards} cartes`;

@@ -195,6 +195,7 @@ input:focus{
 }
 
 .deck{
+    position: relative;
     display: flex;
     flex-flow: column wrap;
     align-content: center;
@@ -206,6 +207,37 @@ input:focus{
 }
 
 #deck-card{
+    box-shadow: 2px 2px 2px white,
+    1px 1px 1px black,
+    2px 2px 2px white,
+    1px 1px 1px black,
+    2px 2px 2px white,
+    3px 3px 3px black;
+    max-width:140px;
+}
+
+.content-cards{
+    position: relative;
+}
+
+.content-top-card{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: contents;
+    opacity: 1;
+}
+
+.content-cards .content-top-card-flip #card-top{
+    transform: rotateY(90deg) translateX(-50px);
+    right:100px;
+}
+
+#card-top{
+    position: absolute;
+    top: 0;
+    left: 0;
     box-shadow: 2px 2px 2px white,
     1px 1px 1px black,
     2px 2px 2px white,
@@ -291,4 +323,51 @@ input:focus{
 {
     -webkit-transform: translateX(200px) rotate(1080deg);
     -webkit-transition: -webkit-transform 1s;
+}
+
+
+.content_mobile_icon{
+    display: none;
+}
+
+#close_nav_button{
+    display: none;
+}
+
+/** Format mobile */
+@media screen and (max-width: 1024px){
+    .stat-item{
+        opacity: 0;
+        left: -500px;
+        z-index: -1;
+        position: fixed;
+        display: flex;
+        top: 0;
+        max-width: 50vw;
+        padding:0 20px;
+    }
+
+    .content_mobile_icon{
+        display: none;
+    }
+
+    #close_nav_button{
+        display: block;
+    }
+
+    #burger_icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .cards img {
+        max-width: 50px!important;
+    }
+
+    .container .open_nav_mobile{
+        opacity: 1;
+        left: 0;
+        z-index: 10;
+
+    }
 }

@@ -13,8 +13,12 @@
         <div class="title-item">
           <h1>POKER 21</h1>
         </div>
-
+        <div class="content_mobile_icon">
+          <img id="burger_icon" src="public/images/burger_icon.svg"/>
+          <span>Afficher les stats</span>
+        </div>
         <div class="hidden global-stats stat-item">
+          <span id="close_nav_button">x</span>
           <div>
               <div>Gain record du casino</div>
               <div id="gain-record">0</div>
@@ -83,7 +87,12 @@
             </div>
 
             <div class="deck">
-              <img id="deck-card" src="public/images/backcard.svg">
+              <div class="content-cards">
+                <img id="deck-card" src="public/images/backcard.svg">
+                <div class="content-top-card">
+                  <img id="card-top" src="public/images/backcard.svg">
+                </div>
+              </div>
               <h4 id="card-count"></h4>
             </div>
 

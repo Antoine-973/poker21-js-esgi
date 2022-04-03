@@ -10,6 +10,7 @@ export function enterCasino(){
     document.getElementsByClassName("enter-casino-button")[0].classList.add("hidden");
     announcementMessage.textContent = "Avec quelle somme rentrez-vous dans le casino ?";
     document.getElementsByClassName("confirm-wallet-amount-button")[0].addEventListener("click", startGame);
+    document.getElementsByClassName("content_mobile_icon")[0].style.display= "block";
 }
 
 function startGame(){
@@ -49,5 +50,13 @@ export function leaveCasino(){
         announcementMessage.textContent = `Vous quittez le casino avec un gain de : ${playerWallet.gain}€ ! A votre entrée, vous aviez un montant de : ${playerWallet.initialValue}€ !`;
     }
 }
+
+document.getElementById('burger_icon').addEventListener("click", function () {
+    document.getElementsByClassName('stat-item')[0].classList.add('open_nav_mobile')
+})
+
+document.getElementById('close_nav_button').addEventListener("click", function () {
+    document.getElementsByClassName('stat-item')[0].classList.remove('open_nav_mobile')
+})
 
 document.getElementsByClassName("enter-casino-button")[0].addEventListener("click", enterCasino);
