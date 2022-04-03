@@ -1,3 +1,5 @@
+"use strict";
+
 import {actualiseWallet, playerWallet} from '../stats/playerWallet.js'
 import {announcementMessage, leaveCasino} from "../../main.js";
 
@@ -25,6 +27,8 @@ let dealerScore = 0;
 let gameStarted = 0;
 let roundBet = 0;
 let turn = 1;
+let abortControllerBeforeGame;
+let abortControllerInGame;
 
 // display of the score of the game
 let deckCardCountDisplay = document.getElementById("card-count");
@@ -42,6 +46,8 @@ let cardToFlip = document.querySelector(".content-top-card");
 
 let restartButtonDisplay = document.getElementById("restart-button");
 let endButtonDisplay = document.getElementById("end-button");
+let cancelButtonDisplay = document.getElementById("cancel-button");
+let reloadButtonDisplay = document.getElementById("reload-button");
 
 // On click events
 surrenderButtonDisplay.onclick = surrender;
@@ -49,6 +55,28 @@ hitButtonDisplay.onclick = () => hitMe('player');
 standButtonDisplay.onclick= ()=>setTimeout(()=>dealerPlays(), 600);
 restartButtonDisplay.onclick = replay;
 endButtonDisplay.onclick = leaveCasino;
+
+reloadButtonDisplay.addEventListener('click', function() {
+    if(abortControllerBeforeGame) {
+        console.log('Event aborted');
+        abortControllerBeforeGame.abort();
+        reloadButtonDisplay.style.display = "none";
+        document.getElementsByClassName("blackjack-table")[0].classList.add("hidden");
+        actualiseWallet('+', roundBet)
+        initBlackJackBet('Début de la partie, veuillez donner la valeur de votre mise :')
+    }
+});
+
+cancelButtonDisplay.addEventListener('click', function() {
+    if (abortControllerInGame){
+        console.log('Event aborted');
+        abortControllerInGame.abort();
+        hitButtonDisplay.style.display = "block";
+        standButtonDisplay.style.display = "block";
+        surrenderButtonDisplay.style.display = "block";
+        cancelButtonDisplay.style.display = "none";
+    }
+});
 
 // On keydown events
 document.addEventListener('keydown', (event) => {
@@ -66,10 +94,10 @@ document.addEventListener('keydown', (event) => {
         else if (name === 'ArrowLeft'){
             hitMe('player');
         }
+        else if (name === 'ArrowUp'){
+            abortControllerInGame.abort();
+        }
     }
-
-    // Alert the key name and key code on keydown
-    //alert(`Key pressed ${name} \r\n Key code value: ${code}`);
 }, false);
 
 export function initBlackJackBet(statusMessage) {
@@ -88,7 +116,7 @@ export function initBlackJackBet(statusMessage) {
     }
 }
 
-function startBlackJack() {
+async function startBlackJack() {
     roundBet = parseInt(document.querySelector('input[id="player-bet"]').value);
     if (roundBet <= playerWallet.getActualValue && roundBet >= 2 && roundBet <= 100) {
         gameStarted = 1;
@@ -98,7 +126,7 @@ function startBlackJack() {
         announcementMessage.textContent = 'La partie commence !';
         document.getElementsByClassName('game-buttons')[0].style.display = "flex";
         document.getElementsByClassName("blackjack-table")[0].classList.remove("hidden");
-        newDeck();
+        await newDeck();
     } else {
         document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", initBlackJackBet('Le montant de votre pari doit être compris entre 2€ et 100€'));
     }
@@ -154,10 +182,16 @@ function replay(){
 
 async function newDeck() {
     resetPlayingArea();
-    const abortController = new AbortController();
-    await fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
+    abortControllerBeforeGame = new AbortController();
+    const signal = abortControllerBeforeGame.signal;
+    reloadButtonDisplay.style.display = "block";
+    await fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1', { signal })
         .then(function (response) {
             if (response.ok) {
+                reloadButtonDisplay.style.display = "none";
+                hitButtonDisplay.style.display = "block";
+                standButtonDisplay.style.display = "block";
+                surrenderButtonDisplay.style.display = "block";
                 return response.json();
             }
             return Promise.reject(new Error("Il y a eu une erreur."));
@@ -167,19 +201,35 @@ async function newDeck() {
             deckCardCountDisplay.textContent = `${remainingCards} cartes`;
         }).catch(function (error) {
             console.log(error.message);
+            announcementMessage.textContent = "Il y a eu une erreur lors de la création du deck";
+            reloadButtonDisplay.style.display = "block";
         });
 
     setTimeout(function () {
-        abortController.abort();
-    }, 5000);
+        abortControllerBeforeGame.abort();
+    }, 10000);
+    await initPlayArea();
+}
 
-    fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=4`)
-        .then(res => res.json())
+async function initPlayArea(){
+    abortControllerBeforeGame = new AbortController();
+    const signal = abortControllerBeforeGame.signal;
+    hitButtonDisplay.style.display = "none";
+    standButtonDisplay.style.display = "none";
+    surrenderButtonDisplay.style.display = "none";
+    reloadButtonDisplay.style.display = "block";
+    await fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=4`, { signal } )
+        .then(function (res) {
+            if (res.ok) {
+                reloadButtonDisplay.style.display = "none";
+                hitButtonDisplay.style.display = "block";
+                standButtonDisplay.style.display = "block";
+                surrenderButtonDisplay.style.display = "block";
+                return res.json();
+            }
+            return Promise.reject(new Error("Il y a eu une erreur."));
+        })
         .then(res => {
-            hitButtonDisplay.style.display = "block";
-            standButtonDisplay.style.display = "block";
-            surrenderButtonDisplay.style.display = "block";
-
             dealerCards.push(res.cards[0], res.cards[1])
             playerCards.push(res.cards[2], res.cards[3])
             remainingCards -= 4;
@@ -215,25 +265,38 @@ async function newDeck() {
             playerScoreDisplay.textContent = `Votre main : ${playerScore}`;
 
         })
-        .catch(console.error)
+        .catch(function (error) {
+            announcementMessage.textContent = "Il y a eu une erreur votre mise vous a été rendu, veuillez réessayer";
+            console.log(error.message);
+            reloadButtonDisplay.style.display = "none";
+        });
+    setTimeout(function () {
+        abortControllerBeforeGame.abort();
+    }, 10000);
 }
 
-function hitMe(target)
-
-{
-
+async function hitMe(target) {
     turn += 1;
     document.getElementById("surrender-button").style.display = "none";
-    fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=1`)
-        .then(res => res.json())
-        .then(res => {
-
-            if (target === 'player') {
+    abortControllerInGame = new AbortController();
+    const signal = abortControllerInGame.signal;
+    hitButtonDisplay.style.display = "none";
+    standButtonDisplay.style.display = "none";
+    surrenderButtonDisplay.style.display = "none";
+    cancelButtonDisplay.style.display = "block";
+    await fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=1`, { signal })
+        .then(function (res) {
+            if (res.ok) {
                 hitButtonDisplay.style.display = "block";
                 standButtonDisplay.style.display = "block";
-                // console.log(cardToFlip)
-                // cardToFlip.classList.add('content-top-card-flip');
-                // return ;
+                surrenderButtonDisplay.style.display = "block";
+                cancelButtonDisplay.style.display = "none";
+                return res.json();
+            }
+            return Promise.reject(new Error("Il y a eu une erreur."));
+        })
+        .then(res => {
+            if (target === 'player')
                 playerCards.push(res.cards[0])
                 remainingCards -= 1;
                 deckCardCountDisplay.textContent = `${remainingCards} cartes`;
@@ -256,7 +319,6 @@ function hitMe(target)
                     actualiseWallet('+', roundBet * 2);
                     roundEnd('win',"Vous avez gagné ! Voulez vous rejouer ?");
                 }
-            }
 
             if (target === 'dealer') {
                 let cardDomElement = document.createElement("img");
@@ -266,11 +328,25 @@ function hitMe(target)
                 deckCardCountDisplay.textContent = `${remainingCards} cartes`;
                 cardDomElement.src = res.cards[0].image;
                 dealerCardsDisplay.appendChild(cardDomElement)
+                hitButtonDisplay.style.display = "block";
+                standButtonDisplay.style.display = "block";
+                surrenderButtonDisplay.style.display = "block";
+                cancelButtonDisplay.style.display = "none";
                 dealerPlays();
             }
 
         })
-        .catch(console.error)
+        .catch(function (error) {
+            console.log(error.message);
+            hitButtonDisplay.style.display = "block";
+            standButtonDisplay.style.display = "block";
+            surrenderButtonDisplay.style.display = "block";
+            cancelButtonDisplay.style.display = "none";
+        });
+
+        setTimeout(function () {
+            abortControllerInGame.abort();
+        }, 10000);
 }
 
 function dealerPlays() {
@@ -288,7 +364,7 @@ function dealerPlays() {
     }
     else if (dealerScore > playerScore) {
         roundLost += 1;
-        roundEnd('lose',"Oups… c’est perdu ! Voulez-vous retenter votre chance ?");
+        roundEnd('lose',"Oups c’est perdu ! Voulez-vous retenter votre chance ?");
     }
     else if (dealerScore === playerScore) {
         roundDraw += 1;
