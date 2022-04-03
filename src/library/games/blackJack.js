@@ -50,6 +50,10 @@ standButtonDisplay.onclick= ()=>setTimeout(()=>dealerPlays(), 600);
 restartButtonDisplay.onclick = replay;
 endButtonDisplay.onclick = leaveCasino;
 
+// device info
+const ua = navigator.userAgent;
+console.log('ua',ua)
+
 // On keydown events
 document.addEventListener('keydown', (event) => {
     let name = event.key;
@@ -122,6 +126,10 @@ function roundEnd(status, statusMessage){
             document.querySelector("#player-cards").classList.add("win-animation");
             setTimeout(() => {document.querySelector("#player-cards").classList.remove("win-animation")}, 1000);
             document.querySelector("#count-victory").innerHTML = `${roundWon}`;
+
+            if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+                window.navigator.vibrate(1000);
+            }
         }
         else if (status === 'lose') {
             document.querySelector("#dealer-cards").classList.add("lose-animation");

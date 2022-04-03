@@ -344,6 +344,7 @@ input:focus{
 
 
     .stat-item{
+        justify-content: unset;
         opacity: 0;
         left: -500px;
         z-index: -1;
