@@ -52,7 +52,9 @@ endButtonDisplay.onclick = leaveCasino;
 
 // device info
 const ua = navigator.userAgent;
-console.log('ua',ua)
+surrenderButtonDisplay.addEventListener('click', () => {
+    window.navigator.vibrate([200, 100, 200]);
+})
 
 // On keydown events
 document.addEventListener('keydown', (event) => {
