@@ -154,9 +154,7 @@ function roundEnd(status, statusMessage){
             setTimeout(() => {document.querySelector("#player-cards").classList.remove("win-animation")}, 1000);
             document.querySelector("#count-victory").innerHTML = `${roundWon}`;
 
-            if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
-                window.navigator.vibrate(1500);
-            }
+            window.navigator.vibrate(1500);
         }
         else if (status === 'lose') {
             document.querySelector("#dealer-cards").classList.add("lose-animation");
