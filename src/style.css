@@ -350,10 +350,19 @@ input:focus{
 @media screen and (max-width: 1024px){
 
     #card-top, #deck-card{
-        max-width: 100px!important;
+        max-width: 60px!important;
+        margin: 50px;
     }
 
-
+    .blackjack-table .game-buttons-item{
+        position: fixed;
+        bottom: 0;
+        height: 50px;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 20px 0;
+        margin-bottom: 30px;
+    }
 
     .stat-item{
         justify-content: unset;
