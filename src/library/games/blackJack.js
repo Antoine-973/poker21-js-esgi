@@ -49,6 +49,7 @@ let restartButtonDisplay = document.getElementById("restart-button");
 let endButtonDisplay = document.getElementById("end-button");
 let cancelButtonDisplay = document.getElementById("cancel-button");
 let reloadButtonDisplay = document.getElementById("reload-button");
+let resetDataDisplay = document.getElementById("reset-data");
 
 // On click events
 surrenderButtonDisplay.onclick = surrender;
@@ -56,6 +57,8 @@ hitButtonDisplay.onclick = () => hitMe('player');
 standButtonDisplay.onclick= ()=>setTimeout(()=>dealerPlays(), 600);
 restartButtonDisplay.onclick = replay;
 endButtonDisplay.onclick = leaveCasino;
+
+resetDataDisplay.onclick = resetData;
 reloadButtonDisplay.addEventListener('click', function() {
     if(abortControllerBeforeGame) {
         console.log('Event aborted');
@@ -628,4 +631,9 @@ function hasNetwork(online) {
         element.classList.add("offline");
         element.innerText = "Offline";
     }
+}
+
+function resetData() {
+    localStorage.clear();
+    location.reload();
 }
