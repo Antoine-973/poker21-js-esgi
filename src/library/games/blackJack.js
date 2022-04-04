@@ -127,7 +127,7 @@ export function initBlackJackBet(statusMessage) {
 
 async function startBlackJack() {
     if (isInLocalStorage('roundBet') && parseInt(localStorage.getItem('roundBet')) !== 0){
-        roundBet = localStorage.getItem('roundBet')
+        roundBet = localStorage.getItem('roundBet');
     }
     else {
         roundBet = parseInt(document.querySelector('input[id="player-bet"]').value);
@@ -135,7 +135,8 @@ async function startBlackJack() {
     }
 
     if (roundBet <= playerWallet.getActualValue && roundBet >= 2 && roundBet <= 100) {
-        actualiseWallet('-', roundBet)
+        actualiseWallet('-', roundBet);
+        localStorage.setItem('playerWallet', playerWallet.getActualValue);
         document.getElementsByClassName("player-bet-form")[0].classList.add("hidden");
         document.getElementsByClassName("title-item")[0].classList.add("hidden");
         announcementMessage.textContent = 'La partie commence !';
@@ -221,6 +222,7 @@ async function startBlackJack() {
             await newDeck();
         }
     } else {
+        localStorage.removeItem('roundBet');
         document.getElementsByClassName("confirm-bet-button")[0].addEventListener("click", initBlackJackBet('Le montant de votre pari doit être compris entre 2€ et 100€'));
     }
 }
