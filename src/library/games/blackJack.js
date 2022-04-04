@@ -229,6 +229,7 @@ function surrender(){
     roundEnd('surrender', 'Vous abandonnez ! Pas de soucis voici la moitié de votre mise initiale. On remet ça ?');
 }
 
+
 function roundEnd(status, statusMessage){
     document.getElementsByClassName('game-buttons')[0].style.display = "none";
 
