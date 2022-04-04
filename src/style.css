@@ -351,7 +351,25 @@ input:focus{
 
     #card-top, #deck-card{
         max-width: 60px!important;
-        margin: 50px;
+        margin-top: -50px;
+    }
+
+    .blackjack-table .dealer-score,.blackjack-table .dealer{
+        grid-row-start: 2;
+        grid-row-end: 2;
+        grid-column-end: 1;
+        grid-column-start: 3;
+    }
+
+    .blackjack-table .player-score,.blackjack-table .player{
+        grid-column-end: 3;
+    }
+
+    .blackjack-table .deck{
+        grid-column-end: 3;
+        grid-column-start: 3;
+        grid-row-start: 2;
+        grid-row-end: 2;
     }
 
     .blackjack-table .game-buttons-item{
@@ -397,6 +415,10 @@ input:focus{
         opacity: 1;
         left: 0;
         z-index: 10;
+    }
 
+    .content-cards .content-top-card-flip #card-top{
+        -webkit-transform: translateX(-200px) translateY(-160px) rotateY(180deg);
+        -webkit-transition: -webkit-transform 1s;
     }
 }
