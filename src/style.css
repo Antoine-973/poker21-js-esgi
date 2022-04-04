@@ -361,6 +361,10 @@ input:focus{
         grid-column-start: 3;
     }
 
+    .blackjack-table .player-score, .blackjack-table .dealer-score{
+        margin-bottom: 80px;
+    }
+
     .player, .dealer{
         margin-top: 20px;
     }
