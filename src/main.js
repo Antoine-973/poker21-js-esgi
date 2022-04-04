@@ -5,6 +5,7 @@ import {actualiseWallet, playerWallet} from './library/stats/playerWallet.js'
 
 export const announcementMessage = document.getElementById("game-status");
 
+// function call when click on enter-casino-button
 export function enterCasino(){
     localStorage.setItem('userFlow', 'enterCasino');
     isInLocalStorage('playerWallet') ? document.getElementById("gain-record").innerHTML = localStorage.getItem('playerWallet') : document.getElementById("gain-record").innerHTML = playerWallet.getGainRecord;
@@ -19,6 +20,7 @@ export function enterCasino(){
      }
 }
 
+// function call when validating wallet form
 function startGame(){
     localStorage.setItem('userFlow', 'startGame');
     document.getElementsByClassName("enter-casino-button")[0].classList.add("hidden");
@@ -53,6 +55,8 @@ function startGame(){
     }
 }
 
+//function call when leaveCasino
+//When a user lost all his money or when he decide to leave the Casino
 export function leaveCasino(){
     document.getElementsByClassName("blackjack-table")[0].classList.add("hidden");
     document.getElementById("description-img").src = "public/images/casino-entrance.png";
@@ -90,6 +94,7 @@ export function leaveCasino(){
     }
 }
 
+// function for known if variable is in localStorage
 export function isInLocalStorage(variable){
     if (localStorage.getItem(variable)){
         return true
@@ -105,6 +110,7 @@ document.getElementById('close_nav_button').addEventListener("click", function (
     document.getElementsByClassName('stat-item')[0].classList.remove('open_nav_mobile')
 })
 
+// depend on the localStorage userFlow variable value we execute specific function
 if (isInLocalStorage('userFlow')){
     if (localStorage.getItem('userFlow') === 'enterCasino'){
         enterCasino()

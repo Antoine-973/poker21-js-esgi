@@ -15,6 +15,7 @@ window.addEventListener("load", () => {
     });
 });
 
+// round variables
 let deckID = "";
 let remainingCards = 0;
 let dealerCards = [];
@@ -105,6 +106,7 @@ document.addEventListener('keydown', (event) => {
     }
 }, false);
 
+// function call when init the roundBet of a new round
 export function initBlackJackBet(statusMessage) {
     if (playerWallet.getActualValue === 0){
         document.getElementsByClassName("blackjack-table")[0].classList.add("hidden");
@@ -125,6 +127,7 @@ export function initBlackJackBet(statusMessage) {
     }
 }
 
+// function call when start a round or refresh to an already ongoing round
 async function startBlackJack() {
     if (isInLocalStorage('roundBet') && parseInt(localStorage.getItem('roundBet')) !== 0){
         roundBet = localStorage.getItem('roundBet');
@@ -227,11 +230,12 @@ async function startBlackJack() {
     }
 }
 
+// function call when click on surrender button
 function surrender(){
     roundEnd('surrender', 'Vous abandonnez ! Pas de soucis voici la moitié de votre mise initiale. On remet ça ?');
 }
 
-
+// function call when a round is finish
 function roundEnd(status, statusMessage){
     document.getElementsByClassName('game-buttons')[0].style.display = "none";
 
@@ -292,6 +296,7 @@ function roundEnd(status, statusMessage){
     }
 }
 
+// function call when click on the replay button
 function replay(){
     localStorage.removeItem('roundBet');
     localStorage.removeItem('gameStarted');
@@ -301,6 +306,7 @@ function replay(){
     initBlackJackBet("Début de la partie, veuillez donner la valeur de votre mise :")
 }
 
+// function call when start a new round for init a new deck
 async function newDeck() {
     resetPlayingArea();
     resetPlayingAreaDisplay();
@@ -335,6 +341,7 @@ async function newDeck() {
     await initPlayArea();
 }
 
+// init a new playing area after creating a new game
 async function initPlayArea(){
     abortControllerBeforeGame = new AbortController();
     const signal = abortControllerBeforeGame.signal;
@@ -411,7 +418,7 @@ async function initPlayArea(){
     localStorage.setItem('roundStatus', 'ongoing');
 }
 
-
+// function call when click on hitMe button
 async function hitMe(target) {
     document.getElementById("surrender-button").style.display = "none";
     abortControllerInGame = new AbortController();
@@ -519,6 +526,7 @@ async function hitMe(target) {
     cardToFlip.classList.add('content-top-card-flip');
 }
 
+// function call when dealer plays
 function dealerPlays() {
     turn += 1;
     localStorage.setItem('turn', turn);
@@ -561,6 +569,7 @@ function dealerPlays() {
     }
 }
 
+// function call when need to compute the score
 function computeScore(cards) {
     let hasAce = false;
     let score = cards.reduce((acc, card) => {
@@ -579,6 +588,7 @@ function computeScore(cards) {
     return score;
 }
 
+// function call for reset the variable used in round
 function resetPlayingArea() {
     localStorage.removeItem('gameStarted');
     dealerCards = [];
@@ -593,6 +603,7 @@ function resetPlayingArea() {
     localStorage.removeItem('turn');
 }
 
+// function call for reseting the display of the playing area
 function resetPlayingAreaDisplay(){
     dealerScoreDisplay.textContent = `Main du dealer : ${dealerScore}`;
     playerScoreDisplay.textContent = `Votre main : ${playerScore}`;
@@ -604,6 +615,7 @@ function resetPlayingAreaDisplay(){
     }
 }
 
+// basic function to tell if user has network
 function hasNetwork(online) {
     const element = document.querySelector(".status");
 

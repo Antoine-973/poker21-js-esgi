@@ -1,3 +1,4 @@
+// object PlayerWallet for handling user stats
 export const PlayerWallet = {
     initialValue: 0,
     actualValue: 0,
