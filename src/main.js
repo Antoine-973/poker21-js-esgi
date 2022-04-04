@@ -7,10 +7,6 @@ export const announcementMessage = document.getElementById("game-status");
 
 export function enterCasino(){
     localStorage.setItem('userFlow', 'enterCasino');
-    playerWallet.setInitialValue = 0;
-    playerWallet.setActualValue = 0;
-    playerWallet.setGain = 0;
-    localStorage.setItem('playerWallet', '0');
     isInLocalStorage('playerWallet') ? document.getElementById("gain-record").innerHTML = localStorage.getItem('playerWallet') : document.getElementById("gain-record").innerHTML = playerWallet.getGainRecord;
     document.getElementsByClassName("player-wallet")[0].classList.remove("hidden");
     localStorage.setItem('playerWalletDisplay', 'hidden');
@@ -21,7 +17,6 @@ export function enterCasino(){
     if (window.matchMedia("(max-width: 1024px)").matches) {
         document.getElementsByClassName("content_mobile_icon")[0].style.display= "block";
      }
-
 }
 
 function startGame(){
@@ -53,6 +48,7 @@ function startGame(){
         initBlackJackBet("Début de la partie ! Veuillez donner le montant de votre mise :");
     }
     else {
+        localStorage.removeItem('walletInitialValue');
         announcementMessage.textContent = "Vous devez rentrer dans le casino avec au minimum 2€ pour pouvoir jouer !"
     }
 }
