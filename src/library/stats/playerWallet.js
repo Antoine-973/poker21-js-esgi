@@ -59,6 +59,7 @@ export function actualiseWallet(operator, value){
     }
 
     playerWallet.gain = playerWallet.actualValue - playerWallet.initialValue;
+    document.querySelector("#gain-record").innerHTML = `${playerWallet.gainRecord}`;
     document.querySelector("#player-wallet-difference").innerHTML = `${playerWallet.actualValue - playerWallet.initialValue}`;
     document.querySelector("#actual-player-wallet-value").innerHTML = `${playerWallet.actualValue}`;
 }
