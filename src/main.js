@@ -7,6 +7,8 @@ export const announcementMessage = document.getElementById("game-status");
 
 export function enterCasino(){
     localStorage.setItem('userFlow', 'enterCasino');
+    playerWallet.setInitialValue = 0;
+    playerWallet.setActualValue = 0;
     playerWallet.setGain = 0;
     localStorage.setItem('playerWallet', '0');
     isInLocalStorage('playerWallet') ? document.getElementById("gain-record").innerHTML = localStorage.getItem('playerWallet') : document.getElementById("gain-record").innerHTML = playerWallet.getGainRecord;
@@ -56,7 +58,6 @@ function startGame(){
 }
 
 export function leaveCasino(){
-    localStorage.clear()
     document.getElementsByClassName("blackjack-table")[0].classList.add("hidden");
     document.getElementById("description-img").src = "public/images/casino-entrance.png";
     document.getElementById("restart-button").classList.add("hidden");
@@ -74,6 +75,22 @@ export function leaveCasino(){
     }
     else if (playerWallet.gain > 0){
         announcementMessage.textContent = `Vous quittez le casino avec un gain de : ${playerWallet.gain}€ ! A votre entrée, vous aviez un montant de : ${playerWallet.initialValue}€ !`;
+    }
+
+    localStorage.clear()
+    playerWallet.setInitialValue = 0;
+    playerWallet.setActualValue = 0;
+
+    if (localStorage.getItem('playerWallet')){
+        localStorage.setItem('playerWallet', playerWallet.setActualValue);
+        document.querySelector("#player-wallet-difference").innerHTML = `${parseInt(localStorage.getItem('playerWallet')) - parseInt(localStorage.getItem('walletInitialValue'))}`;
+        document.querySelector("#gain-record").innerHTML = localStorage.getItem('gainRecord');
+        document.querySelector("#actual-player-wallet-value").innerHTML = parseInt(localStorage.getItem('playerWallet'));
+    }
+    else {
+        document.querySelector("#gain-record").innerHTML = `${playerWallet.gainRecord}`;
+        document.querySelector("#player-wallet-difference").innerHTML = `${playerWallet.actualValue - playerWallet.initialValue}`;
+        document.querySelector("#actual-player-wallet-value").innerHTML = `${playerWallet.actualValue}`;
     }
 }
 

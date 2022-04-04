@@ -273,13 +273,13 @@ function roundEnd(status, statusMessage){
             localStorage.setItem('roundStatus', 'surrender');
         }
 
-        //localStorage.removeItem('roundBet');
         announcementMessage.textContent = statusMessage;
         localStorage.setItem('announcementMessage', statusMessage);
         restartButtonDisplay.classList.remove("hidden");
         endButtonDisplay.classList.remove("hidden");
     }
     else {
+        actualiseWallet('-', roundBet);
         localStorage.clear();
         document.querySelector("#dealer-cards").classList.add("lose-animation");
         setTimeout(() => {document.querySelector("#dealer-cards").classList.remove("lose-animation")}, 1000);
@@ -462,6 +462,7 @@ async function hitMe(target) {
             if (playerScore > 21) {
                 roundLost += 1;
                 localStorage.setItem('roundLost', roundLost);
+                localStorage.setItem('playerWallet', playerWallet.getActualValue)
                 roundEnd('lose',"Vous avez perdu ! Voulez vous rejouer ?");
             }
             else if (playerScore === 21) {
