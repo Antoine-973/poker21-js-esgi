@@ -359,13 +359,13 @@ input:focus{
         grid-row-end: 2;
         grid-column-end: 1;
         grid-column-start: 3;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
 
     }
 
     .blackjack-table .player-score,.blackjack-table .player{
         grid-column-end: 3;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
     }
 
     .blackjack-table .deck{
