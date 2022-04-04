@@ -13,6 +13,13 @@ Pour abandonner : flèche directionnelle bas
 Si vous disposez d'un faible bande passante, le tirage prends un certains temps, durant celui-ci, 
 vous pouvez appuyer sur 'flèche directionnelle haut' pour interrompre le tirage.
 
+## Docker
+Pour lancer l'application sous docker, vous devez disposez de la librairie make pour éxécuter les makefile
+`make start`
+Si vous souhaitez la stop faîtes :
+`make stop`
+Si vous souhaitez la relancer faîtes :
+`make restart`
 
 ## Les fonctionnalités
 - Possibilité de jouer au blackjack, en respectant les règles.
@@ -22,3 +29,4 @@ vous pouvez appuyer sur 'flèche directionnelle haut' pour interrompre le tirage
 - Animation ( visuel et vibration) lors d'évènements comme les victoires / défaites / pioche.
 - Sauvegarde des données et de la session dans le local storage
 - Possibilité de lancer les fonctions via les touches du clavier
+- Fonctionne sous docker
